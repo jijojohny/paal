@@ -21,10 +21,10 @@ export function Today() {
 
   const load = useCallback(async () => {
     if (!isShift(shift)) return
-    setStatus("loading")
     try {
       const next = await fetchSpread(area, society, shift)
       setRows(next)
+      setMessage("")
       setStatus("ready")
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "The query failed.")
@@ -33,6 +33,7 @@ export function Today() {
   }, [area, society, shift])
 
   useEffect(() => {
+    setStatus("loading")
     void load()
     return watchReadings(() => {
       void load()

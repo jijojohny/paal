@@ -6,6 +6,8 @@ export function watchReadings(onChange: () => void): () => void {
   return client.watchEntityEvents({
     onEntityCreated: () => onChange(),
     onEntityDeleted: () => onChange(),
-    onError: () => onChange(),
+    onError: () => {
+      // A socket error is not a new reading. The last query stays on screen.
+    },
   })
 }

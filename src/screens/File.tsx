@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom"
 import { FAUCET_URL } from "../arkiv/client"
 import { isShift, parseQuality } from "../arkiv/labels"
 import { findMine, type OwnReading } from "../arkiv/readings"
-import { creatorAddress, fileReading, removeOwnReading } from "../arkiv/write"
+import { AlreadyFiled, creatorAddress, fileReading, removeOwnReading } from "../arkiv/write"
 import { SocietyHeader } from "./SocietyHeader"
 
 export function File() {
@@ -59,9 +59,12 @@ export function File() {
     setPending(true)
     setMessage("")
     try {
-      await fileReading(area, society, shift, nextFat, nextSnf)
-      setMine(await findMine(creatorAddress(), area, society, shift))
+      setMine(await fileReading(area, society, shift, nextFat, nextSnf))
     } catch (cause) {
+      if (cause instanceof AlreadyFiled) {
+        setMine(cause.existing)
+        return
+      }
       setMessage(cause instanceof Error ? cause.message : "The write failed.")
     } finally {
       setPending(false)
