@@ -1,0 +1,172 @@
+:root {
+  color-scheme: light dark;
+  --bg: #f4f1ea;
+  --fg: #1c1915;
+  --muted: #5c564c;
+  --line: #d9d2c5;
+  --surface: #fffdf8;
+  --ring: #8a5a12;
+  --danger: #8d2b2b;
+  font-family: system-ui, "Nirmala UI", "Lohit Tamil", sans-serif;
+  line-height: 1.45;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #171512;
+    --fg: #f4f1ea;
+    --muted: #c8c0b4;
+    --line: #3a342c;
+    --surface: #221f1b;
+    --ring: #e2b15a;
+    --danger: #ffb4b4;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+}
+
+button,
+a,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.app {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 1rem 1rem 3rem;
+}
+
+.top,
+.subnav {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.top {
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.mark {
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.subnav {
+  flex-wrap: wrap;
+  margin-top: 0.75rem;
+}
+
+.subnav a,
+.top a,
+button {
+  min-height: 2.5rem;
+  display: inline-flex;
+  align-items: center;
+}
+
+button {
+  padding: 0 0.9rem;
+  border: 1px solid var(--fg);
+  background: var(--fg);
+  color: var(--bg);
+}
+
+form {
+  display: grid;
+  gap: 0.9rem;
+  margin: 1rem 0;
+}
+
+label,
+fieldset {
+  display: grid;
+  gap: 0.35rem;
+}
+
+input {
+  min-height: 2.5rem;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+fieldset {
+  border: 1px solid var(--line);
+  padding: 0.6rem 0.8rem;
+}
+
+.eyebrow,
+.muted {
+  color: var(--muted);
+}
+
+.figure {
+  font-size: 1.4rem;
+}
+
+.rows,
+.places {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.rows li,
+.places a {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: space-between;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.places a {
+  text-decoration: none;
+  min-height: 2.5rem;
+}
+
+.address {
+  overflow-wrap: anywhere;
+  font-family: ui-monospace, monospace;
+}
+
+.error,
+.argue {
+  color: var(--danger);
+}
+
+.argue span {
+  display: block;
+  margin-top: 0.35rem;
+}
+
+h1 {
+  font-size: 1.8rem;
+  line-height: 1.15;
+  margin: 0.2rem 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto;
+  }
+}
