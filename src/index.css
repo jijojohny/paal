@@ -182,7 +182,7 @@ h1 {
   min-height: 100vh;
   background: #0f0f0f;
   color: var(--ink);
-  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-family: "Space Grotesk", "Noto Sans Tamil", "Noto Sans Devanagari", system-ui, sans-serif;
 }
 
 .landing-bar {
@@ -228,6 +228,61 @@ h1 {
 
 .landing-nav a.active {
   color: var(--ink);
+}
+
+.lang-switch {
+  position: relative;
+}
+
+.lang-switch > button,
+.lang-menu button {
+  min-height: 2.5rem;
+  border-radius: 0.4rem;
+  background: transparent;
+  font-weight: 500;
+}
+
+.lang-switch > button {
+  padding: 0 0.75rem;
+  border: 1px solid var(--ghost);
+  color: var(--ink);
+}
+
+.lang-menu {
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  right: 0;
+  z-index: 5;
+  min-width: 9.5rem;
+  margin: 0;
+  padding: 0.35rem;
+  list-style: none;
+  border: 1px solid var(--line);
+  border-radius: 0.6rem;
+  background: #17171b;
+}
+
+.lang-menu button {
+  width: 100%;
+  padding: 0 0.7rem;
+  border: 0;
+  color: var(--ink);
+  text-align: start;
+}
+
+.lang-menu button[aria-checked="true"] {
+  background: #221f33;
+}
+
+.lang-switch button:focus-visible {
+  outline: 2px solid #d6d3ff;
+  outline-offset: 3px;
+}
+
+@media (hover: hover) {
+  .lang-menu button:hover {
+    background: #221f33;
+  }
 }
 
 @media (hover: hover) {

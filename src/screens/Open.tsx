@@ -3,16 +3,20 @@ import { Link, useNavigate } from "react-router-dom"
 import { defaultShift } from "../arkiv/expiry"
 import { isDigitsOnly, normalizeLabel, type Place, type Shift } from "../arkiv/labels"
 import { listPlaces, rememberPlace } from "../arkiv/places"
+import { useLanguage } from "../i18n/language"
 import { SiteHeader } from "./SiteHeader"
 import { todayPath } from "./paths"
 
+type OpenError = "errArea" | "errSociety" | "errDigits"
+
 type FieldError = {
   field: "area" | "society"
-  message: string
+  key: OpenError
 }
 
 export function Open() {
   const navigate = useNavigate()
+  const { t } = useLanguage()
   const areaRef = useRef<HTMLInputElement>(null)
   const societyRef = useRef<HTMLInputElement>(null)
   const [area, setArea] = useState("")
@@ -32,15 +36,15 @@ export function Open() {
     const nextArea = normalizeLabel(area)
     const nextSociety = normalizeLabel(society)
     if (!nextArea) {
-      fail({ field: "area", message: "Enter the district or union." })
+      fail({ field: "area", key: "errArea" })
       return
     }
     if (!nextSociety) {
-      fail({ field: "society", message: "Enter the name painted on the society." })
+      fail({ field: "society", key: "errSociety" })
       return
     }
     if (isDigitsOnly(nextSociety)) {
-      fail({ field: "society", message: "Use the name on the building. A number alone is refused." })
+      fail({ field: "society", key: "errDigits" })
       return
     }
     setError(null)
@@ -53,18 +57,18 @@ export function Open() {
     <div className="landing">
       <SiteHeader />
       <article className="landing-page">
-        <h1>Open a society</h1>
-        <p>Name the building. The fat on your paper slip stays on the next screen.</p>
+        <h1>{t.openSociety}</h1>
+        <p>{t.openLead}</p>
         <form className="open-form" onSubmit={onSubmit} noValidate>
           <label htmlFor="area">
-            District or union
+            {t.district}
             <input
               id="area"
               ref={areaRef}
               name="area"
               autoComplete="address-level2"
               spellCheck={false}
-              placeholder="madurai"
+              placeholder={t.areaPlaceholder}
               value={area}
               aria-invalid={error?.field === "area"}
               aria-describedby="area-hint"
@@ -75,20 +79,18 @@ export function Open() {
             />
           </label>
           <p id="area-hint" className={error?.field === "area" ? "error" : "hint"}>
-            {error?.field === "area"
-              ? error.message
-              : "Required. Two societies with the same name stay apart when the district differs."}
+            {error?.field === "area" ? t[error.key] : t.areaHint}
           </p>
 
           <label htmlFor="society">
-            Society name
+            {t.society}
             <input
               id="society"
               ref={societyRef}
               name="society"
               autoComplete="off"
               spellCheck={false}
-              placeholder="aavin society"
+              placeholder={t.societyPlaceholder}
               value={society}
               aria-invalid={error?.field === "society"}
               aria-describedby="society-hint"
@@ -99,13 +101,11 @@ export function Open() {
             />
           </label>
           <p id="society-hint" className={error?.field === "society" ? "error" : "hint"}>
-            {error?.field === "society"
-              ? error.message
-              : "Required. The name painted on the building."}
+            {error?.field === "society" ? t[error.key] : t.societyHint}
           </p>
 
           <fieldset>
-            <legend>Shift</legend>
+            <legend>{t.shift}</legend>
             <div className="shift-choices">
               <label>
                 <input
@@ -115,7 +115,7 @@ export function Open() {
                   checked={shift === "morning"}
                   onChange={() => setShift("morning")}
                 />
-                Morning
+                {t.morning}
               </label>
               <label>
                 <input
@@ -125,19 +125,19 @@ export function Open() {
                   checked={shift === "evening"}
                   onChange={() => setShift("evening")}
                 />
-                Evening
+                {t.evening}
               </label>
             </div>
-            <p className="hint">Morning is before 2 in the afternoon in India. Evening is after that.</p>
+            <p className="hint">{t.shiftHint}</p>
           </fieldset>
 
-          <button type="submit">Open today</button>
+          <button type="submit">{t.openToday}</button>
         </form>
 
         <section className="open-saved">
-          <h2>Opened on this phone</h2>
+          <h2>{t.opened}</h2>
           {places.length === 0 ? (
-            <p>Names you open stay on this phone. Fats do not.</p>
+            <p>{t.openedEmpty}</p>
           ) : (
             <ul className="open-places">
               {places.map((place) => (

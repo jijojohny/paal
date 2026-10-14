@@ -1,6 +1,7 @@
 import type { ReactNode } from "react"
 import { NavLink } from "react-router-dom"
 import type { Shift } from "../arkiv/labels"
+import { useLanguage } from "../i18n/language"
 import { SiteHeader } from "./SiteHeader"
 import { filePath, slipPath, todayPath } from "./paths"
 
@@ -22,13 +23,14 @@ export function SocietyNav({
   society: string
   shift: Shift
 }) {
+  const { t } = useLanguage()
   return (
-    <nav className="society-nav" aria-label="This society">
+    <nav className="society-nav" aria-label={t.thisSociety}>
       <NavLink end to={todayPath(area, society, shift)}>
-        Today
+        {t.today}
       </NavLink>
-      <NavLink to={slipPath(area, society, shift)}>Slip</NavLink>
-      <NavLink to={filePath(area, society, shift)}>File</NavLink>
+      <NavLink to={slipPath(area, society, shift)}>{t.slip}</NavLink>
+      <NavLink to={filePath(area, society, shift)}>{t.file}</NavLink>
     </nav>
   )
 }
@@ -42,14 +44,13 @@ export function SocietyHeader({
   society: string
   shift: Shift
 }) {
-  const shiftLabel = shift === "morning" ? "Morning" : "Evening"
+  const { t } = useLanguage()
+  const shiftLabel = shift === "morning" ? t.morning : t.evening
   return (
     <header className="society">
       <p className="eyebrow">{area}</p>
       <h1>{society}</h1>
-      <p>
-        {shiftLabel} shift. Readings die at midnight in India.
-      </p>
+      <p>{t.shiftDies(shiftLabel)}</p>
       <SocietyNav area={area} society={society} shift={shift} />
     </header>
   )

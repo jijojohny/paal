@@ -2,6 +2,8 @@ import { FormEvent, useRef, useState } from "react"
 import { Link, useParams } from "react-router-dom"
 import { isHigherFat, isShift, parseQuality } from "../arkiv/labels"
 import { fetchSpread } from "../arkiv/readings"
+import { copy, explainFailure } from "../i18n/copy"
+import { useLanguage } from "../i18n/language"
 import { SocietyHeader, SocietyScreen } from "./SocietyHeader"
 
 export function Slip() {
@@ -14,13 +16,14 @@ export function Slip() {
   const [higher, setHigher] = useState<number | null>(null)
   const [error, setError] = useState("")
   const [pending, setPending] = useState(false)
+  const { lang, t } = useLanguage()
 
   if (!isShift(shift)) {
     return (
       <SocietyScreen>
-        <h1>Unknown shift</h1>
+        <h1>{t.unknownShift}</h1>
         <Link className="landing-solid" to="/open">
-          Open a society
+          {t.openSociety}
         </Link>
       </SocietyScreen>
     )
@@ -32,7 +35,7 @@ export function Slip() {
     const parsed = parseQuality(slipFat, "fat")
     if (!parsed) {
       setHigher(null)
-      setError("Enter the fat printed on the slip, from 1 to 12.")
+      setError("slip")
       fatRef.current?.focus()
       return
     }
@@ -43,7 +46,7 @@ export function Slip() {
       setHigher(rows.filter((row) => isHigherFat(row.fat, parsed)).length)
     } catch (cause) {
       setHigher(null)
-      setError(cause instanceof Error ? cause.message : "The query failed.")
+      setError(explainFailure(cause, t).text)
     } finally {
       setPending(false)
     }
@@ -52,11 +55,11 @@ export function Slip() {
   return (
     <SocietyScreen>
       <SocietyHeader area={area} society={society} shift={shift} />
-      <h2>The paper slip</h2>
-      <p>This number stays on this page. It is not saved.</p>
+      <h2>{t.paperSlip}</h2>
+      <p>{t.slipStays}</p>
       <form className="open-form" onSubmit={(event) => void onSubmit(event)} noValidate>
         <label htmlFor="slip-fat">
-          Fat on the slip
+          {t.fatOnSlip}
           <input
             id="slip-fat"
             ref={fatRef}
@@ -75,11 +78,11 @@ export function Slip() {
           />
         </label>
         <p id="slip-hint" className={error ? "error" : "hint"}>
-          {error || "Required. From 1 to 12. This page forgets it when you leave."}
+          {error === "slip" ? t.errSlip : error || t.slipHint}
         </p>
         <div className="form-actions">
           <button type="submit" disabled={pending} aria-busy={pending}>
-            {pending ? "Comparing…" : "Compare"}
+            {pending ? t.comparing : t.compare}
           </button>
           <button
             className="quiet"
@@ -90,21 +93,17 @@ export function Slip() {
               setError("")
             }}
           >
-            Clear slip
+            {t.clearSlip}
           </button>
         </div>
       </form>
       {higher != null && higher > 1 ? (
         <p className="argue">
-          More than one person saw a higher fat than the slip. Argue it.
-          <span lang="ta">ஒன்றுக்கு மேற்பட்ட பேர் சீட்டை விட அதிக கொழுப்பு பார்த்தனர். வாதாடுங்கள்.</span>
+          {t.argue}
+          {lang === "ta" ? <span lang="en">{copy.en.argue}</span> : <span lang="ta">{copy.ta.argue}</span>}
         </p>
       ) : null}
-      {higher != null && higher <= 1 ? (
-        <p className="hint">
-          One wallet cannot change the society. {higher} reading{higher === 1 ? " is" : "s are"} above this slip.
-        </p>
-      ) : null}
+      {higher != null && higher <= 1 ? <p className="hint">{t.calm(higher)}</p> : null}
     </SocietyScreen>
   )
 }

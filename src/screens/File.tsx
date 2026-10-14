@@ -4,6 +4,8 @@ import { FAUCET_URL } from "../arkiv/client"
 import { isShift, parseQuality } from "../arkiv/labels"
 import { findMine, type OwnReading } from "../arkiv/readings"
 import { AlreadyFiled, creatorAddress, fileReading, removeOwnReading } from "../arkiv/write"
+import { explainFailure } from "../i18n/copy"
+import { useLanguage } from "../i18n/language"
 import { todayPath } from "./paths"
 import { SocietyHeader, SocietyScreen } from "./SocietyHeader"
 
@@ -21,6 +23,8 @@ export function File() {
   const [message, setMessage] = useState("")
   const [invalid, setInvalid] = useState<"fat" | "snf" | null>(null)
   const [pending, setPending] = useState(false)
+  const [faucet, setFaucet] = useState(false)
+  const { t } = useLanguage()
 
   useEffect(() => {
     if (!isShift(shift)) return
@@ -34,20 +38,22 @@ export function File() {
       })
       .catch((cause: unknown) => {
         if (cancelled) return
-        setMessage(cause instanceof Error ? cause.message : "The query failed.")
+        const explained = explainFailure(cause, t)
+        setMessage(explained.text)
+        setFaucet(explained.faucet)
         setStatus("error")
       })
     return () => {
       cancelled = true
     }
-  }, [area, society, shift])
+  }, [area, society, shift, t])
 
   if (!isShift(shift)) {
     return (
       <SocietyScreen>
-        <h1>Unknown shift</h1>
+        <h1>{t.unknownShift}</h1>
         <Link className="landing-solid" to="/open">
-          Open a society
+          {t.openSociety}
         </Link>
       </SocietyScreen>
     )
@@ -60,18 +66,21 @@ export function File() {
     const nextSnf = parseQuality(snf, "snf")
     if (!nextFat) {
       setInvalid("fat")
-      setMessage("Enter the fat on the glass, from 1 to 12.")
+      setFaucet(false)
+      setMessage(t.errFat)
       fatRef.current?.focus()
       return
     }
     if (!nextSnf) {
       setInvalid("snf")
-      setMessage("Enter the SNF on the glass, from 6 to 12.")
+      setFaucet(false)
+      setMessage(t.errSnf)
       snfRef.current?.focus()
       return
     }
     setPending(true)
     setInvalid(null)
+    setFaucet(false)
     setMessage("")
     try {
       setMine(await fileReading(area, society, shift, nextFat, nextSnf))
@@ -80,7 +89,9 @@ export function File() {
         setMine(cause.existing)
         return
       }
-      setMessage(cause instanceof Error ? cause.message : "The write failed.")
+      const explained = explainFailure(cause, t)
+      setMessage(explained.text || t.errWrite)
+      setFaucet(explained.faucet)
     } finally {
       setPending(false)
     }
@@ -89,6 +100,7 @@ export function File() {
   async function onRemove() {
     if (!mine) return
     setPending(true)
+    setFaucet(false)
     setMessage("")
     try {
       await removeOwnReading(mine.key)
@@ -96,20 +108,20 @@ export function File() {
       setFat("")
       setSnf("")
     } catch (cause) {
-      setMessage(cause instanceof Error ? cause.message : "The delete failed.")
+      const explained = explainFailure(cause, t)
+      setMessage(explained.text || t.errDelete)
+      setFaucet(explained.faucet)
     } finally {
       setPending(false)
     }
   }
 
-  const needsFaucet = message.toLowerCase().includes("glm")
-
   return (
     <SocietyScreen>
       <SocietyHeader area={area} society={society} shift={shift} />
-      <h2>What the glass showed</h2>
-      <p>One phone files one fat and one SNF for this shift. A second filing is refused.</p>
-      {status === "loading" ? <p aria-busy="true">Checking this phone…</p> : null}
+      <h2>{t.glassTitle}</h2>
+      <p>{t.glassLead}</p>
+      {status === "loading" ? <p aria-busy="true">{t.checking}</p> : null}
       {status === "error" ? (
         <div>
           <p className="error">{message}</p>
@@ -123,29 +135,30 @@ export function File() {
                 .then((reading) => {
                   setMine(reading)
                   setMessage("")
+                  setFaucet(false)
                   setStatus("ready")
                 })
                 .catch((cause: unknown) => {
-                  setMessage(cause instanceof Error ? cause.message : "The query failed.")
+                  const explained = explainFailure(cause, t)
+                  setMessage(explained.text)
+                  setFaucet(explained.faucet)
                   setStatus("error")
                 })
             }}
           >
-            Try again
+            {t.tryAgain}
           </button>
         </div>
       ) : null}
       {status === "ready" && mine ? (
         <div className="filed">
-          <p>
-            This phone already filed fat {mine.fat}, SNF {mine.snf}. A second reading is refused.
-          </p>
+          <p>{t.alreadyFiled(mine.fat, mine.snf)}</p>
           <div className="form-actions">
             <button className="quiet" type="button" disabled={pending} onClick={() => void onRemove()}>
-              {pending ? "Removing…" : "Remove my reading"}
+              {pending ? t.removing : t.remove}
             </button>
             <Link className="landing-solid" to={todayPath(area, society, shift)}>
-              See the board
+              {t.seeBoard}
             </Link>
           </div>
         </div>
@@ -153,7 +166,7 @@ export function File() {
       {status === "ready" && !mine ? (
         <form className="open-form" onSubmit={(event) => void onSubmit(event)} noValidate>
           <label htmlFor="fat">
-            Fat
+            {t.fat}
             <input
               id="fat"
               ref={fatRef}
@@ -172,10 +185,10 @@ export function File() {
             />
           </label>
           <p id="fat-hint" className={invalid === "fat" ? "error" : "hint"}>
-            {invalid === "fat" ? message : "Required. From 1 to 12."}
+            {invalid === "fat" ? t.errFat : t.fatHint}
           </p>
           <label htmlFor="snf">
-            SNF
+            {t.snf}
             <input
               id="snf"
               ref={snfRef}
@@ -194,14 +207,14 @@ export function File() {
             />
           </label>
           <p id="snf-hint" className={invalid === "snf" ? "error" : "hint"}>
-            {invalid === "snf" ? message : "Required. From 6 to 12."}
+            {invalid === "snf" ? t.errSnf : t.snfHint}
           </p>
           <div className="form-actions">
             <button type="submit" disabled={pending} aria-busy={pending}>
-              {pending ? "Filing…" : "File reading"}
+              {pending ? t.filing : t.fileReading}
             </button>
             <a className="landing-ghost" href={FAUCET_URL}>
-              Get test GLM
+              {t.getGlm}
             </a>
           </div>
         </form>
@@ -209,9 +222,7 @@ export function File() {
       {message && status === "ready" && !invalid ? (
         <p className="error">
           {message}{" "}
-          {needsFaucet ? (
-            <a href={FAUCET_URL}>Get test GLM</a>
-          ) : null}
+          {faucet ? <a href={FAUCET_URL}>{t.getGlm}</a> : null}
         </p>
       ) : null}
     </SocietyScreen>

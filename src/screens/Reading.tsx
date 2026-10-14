@@ -1,16 +1,18 @@
 import { Link } from "react-router-dom"
+import { useLanguage } from "../i18n/language"
 import { SiteHeader } from "./SiteHeader"
 
 export function Reading() {
+  const { t } = useLanguage()
   return (
     <div className="landing">
       <SiteHeader />
       <article className="landing-page">
-        <h1>The reading</h1>
-        <p>One phone files one fat and one SNF for this society and this shift. A second filing is refused.</p>
-        <p>Fat and SNF other phones file for this society and this shift. One phone, one reading.</p>
+        <h1>{t.reading}</h1>
+        <p>{t.readingP1}</p>
+        <p>{t.readingP2}</p>
         <Link className="landing-solid" to="/open">
-          Open a society
+          {t.openSociety}
         </Link>
       </article>
     </div>

@@ -4,6 +4,8 @@ import { creatorAddress } from "../arkiv/write"
 import { isShift } from "../arkiv/labels"
 import { fetchSpread, type SpreadRow } from "../arkiv/readings"
 import { watchReadings } from "../arkiv/watch"
+import { explainFailure } from "../i18n/copy"
+import { useLanguage } from "../i18n/language"
 import { filePath, slipPath } from "./paths"
 import { SocietyHeader, SocietyScreen } from "./SocietyHeader"
 
@@ -18,6 +20,7 @@ export function Today() {
   const [rows, setRows] = useState<SpreadRow[]>([])
   const [message, setMessage] = useState("")
   const mine = creatorAddress()
+  const { t } = useLanguage()
 
   const load = useCallback(async () => {
     if (!isShift(shift)) return
@@ -27,10 +30,10 @@ export function Today() {
       setMessage("")
       setStatus("ready")
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : "The query failed.")
+      setMessage(explainFailure(error, t).text)
       setStatus("error")
     }
-  }, [area, society, shift])
+  }, [area, society, shift, t])
 
   useEffect(() => {
     setStatus("loading")
@@ -43,9 +46,9 @@ export function Today() {
   if (!isShift(shift)) {
     return (
       <SocietyScreen>
-        <h1>Unknown shift</h1>
+        <h1>{t.unknownShift}</h1>
         <Link className="landing-solid" to="/open">
-          Open a society
+          {t.openSociety}
         </Link>
       </SocietyScreen>
     )
@@ -54,40 +57,43 @@ export function Today() {
   return (
     <SocietyScreen>
       <SocietyHeader area={area} society={society} shift={shift} />
-      {status === "loading" ? <p aria-busy="true">Reading the board…</p> : null}
+      {status === "loading" ? <p aria-busy="true">{t.readingBoard}</p> : null}
       {status === "error" ? (
         <div className="error">
-          <p>The board did not load. {message}</p>
+          <p>
+            {t.boardFailed} {message}
+          </p>
           <button type="button" onClick={() => void load()}>
-            Try again
+            {t.tryAgain}
           </button>
         </div>
       ) : null}
       {status === "ready" && rows.length === 0 ? (
         <div className="board-empty">
-          <p>No readings for this shift yet. The count is this query. It is not saved.</p>
+          <p>{t.emptyBoard}</p>
           <Link className="landing-solid" to={filePath(area, society, shift)}>
-            File what the glass showed
+            {t.fileGlass}
           </Link>
         </div>
       ) : null}
       {status === "ready" && rows.length > 0 ? (
         <>
-          <p className="board-count">
-            <strong>{rows.length}</strong> {rows.length === 1 ? "wallet" : "wallets"} filed. The count is this
-            query. It is not saved.
-          </p>
+          <p className="board-count">{t.walletCount(rows.length)}</p>
           <ul className="board-list">
             {rows.map((row) => (
               <li key={row.creator}>
-                <span>Fat {row.fat}</span>
-                <span>SNF {row.snf}</span>
-                {row.creator.toLowerCase() === mine.toLowerCase() ? <em>This phone</em> : null}
+                <span>
+                  {t.fat} {row.fat}
+                </span>
+                <span>
+                  {t.snf} {row.snf}
+                </span>
+                {row.creator.toLowerCase() === mine.toLowerCase() ? <em>{t.thisPhone}</em> : null}
               </li>
             ))}
           </ul>
           <Link className="landing-ghost" to={slipPath(area, society, shift)}>
-            Compare a paper slip
+            {t.compareSlip}
           </Link>
         </>
       ) : null}

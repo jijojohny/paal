@@ -1,20 +1,15 @@
 import { Link } from "react-router-dom"
+import { useLanguage } from "../i18n/language"
 import { SiteHeader } from "./SiteHeader"
 
-const FACTS = [
-  "One phone, one reading",
-  "The slip is never stored",
-  "Readings die at midnight",
-  "More than one wallet to argue",
-]
-
 export function Landing() {
+  const { t } = useLanguage()
   return (
     <div className="landing">
       <SiteHeader />
 
       <p className="landing-ticker">
-        {FACTS.map((fact) => (
+        {t.facts.map((fact) => (
           <span key={fact}>{fact}</span>
         ))}
       </p>
@@ -22,41 +17,38 @@ export function Landing() {
       <section className="landing-hero">
         <div className="landing-copy">
           <h1>
-            The fat on the
+            {t.line1}
             <br />
-            glass.
+            {t.line2}
             <span className="landing-accent" aria-hidden="true" />
             <br />
-            The slip stays on paper.
+            {t.line3}
           </h1>
-          <p>
-            A pourer types the fat printed on the paper slip. Other phones record the fat and SNF
-            they saw on the analyser. The slip is never stored. The readings die at midnight.
-          </p>
+          <p>{t.hero}</p>
           <div className="landing-actions">
             <Link className="landing-solid" to="/open">
-              Open a society
+              {t.openSociety}
             </Link>
             <Link className="landing-ghost" to="/reading">
-              How a reading works
+              {t.howReading}
             </Link>
           </div>
           <ul className="landing-chips">
-            <li>Morning</li>
-            <li>Evening</li>
-            <li>Fat</li>
-            <li>SNF</li>
+            <li>{t.morning}</li>
+            <li>{t.evening}</li>
+            <li>{t.fat}</li>
+            <li>{t.snf}</li>
           </ul>
         </div>
 
         <div className="landing-board">
           <article>
-            <h2>On the glass</h2>
-            <p>Fat and SNF other phones file for this society and this shift. One phone, one reading.</p>
+            <h2>{t.onGlass}</h2>
+            <p>{t.onGlassBody}</p>
           </article>
           <article>
-            <h2>On the slip</h2>
-            <p>The number on the paper. Compared on that screen, and never written.</p>
+            <h2>{t.onSlip}</h2>
+            <p>{t.onSlipBody}</p>
           </article>
         </div>
       </section>
