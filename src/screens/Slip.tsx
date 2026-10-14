@@ -1,14 +1,15 @@
-import { FormEvent, useState } from "react"
+import { FormEvent, useRef, useState } from "react"
 import { Link, useParams } from "react-router-dom"
 import { isHigherFat, isShift, parseQuality } from "../arkiv/labels"
 import { fetchSpread } from "../arkiv/readings"
-import { SocietyHeader } from "./SocietyHeader"
+import { SocietyHeader, SocietyScreen } from "./SocietyHeader"
 
 export function Slip() {
   const params = useParams()
   const area = params.area ?? ""
   const society = params.society ?? ""
   const shift = params.shift
+  const fatRef = useRef<HTMLInputElement>(null)
   const [slipFat, setSlipFat] = useState("")
   const [higher, setHigher] = useState<number | null>(null)
   const [error, setError] = useState("")
@@ -16,10 +17,12 @@ export function Slip() {
 
   if (!isShift(shift)) {
     return (
-      <section>
+      <SocietyScreen>
         <h1>Unknown shift</h1>
-        <Link to="/open">Open a society</Link>
-      </section>
+        <Link className="landing-solid" to="/open">
+          Open a society
+        </Link>
+      </SocietyScreen>
     )
   }
 
@@ -30,6 +33,7 @@ export function Slip() {
     if (!parsed) {
       setHigher(null)
       setError("Enter the fat printed on the slip, from 1 to 12.")
+      fatRef.current?.focus()
       return
     }
     setPending(true)
@@ -46,35 +50,49 @@ export function Slip() {
   }
 
   return (
-    <section>
+    <SocietyScreen>
       <SocietyHeader area={area} society={society} shift={shift} />
       <h2>The paper slip</h2>
       <p>This number stays on this page. It is not saved.</p>
-      <form onSubmit={(event) => void onSubmit(event)}>
-        <label>
+      <form className="open-form" onSubmit={(event) => void onSubmit(event)} noValidate>
+        <label htmlFor="slip-fat">
           Fat on the slip
           <input
+            id="slip-fat"
+            ref={fatRef}
             name="slip-fat"
             inputMode="decimal"
             autoComplete="off"
+            spellCheck={false}
+            placeholder="3.5"
             value={slipFat}
-            onChange={(event) => setSlipFat(event.target.value)}
+            aria-invalid={error !== ""}
+            aria-describedby="slip-hint"
+            onChange={(event) => {
+              setSlipFat(event.target.value)
+              if (error) setError("")
+            }}
           />
         </label>
-        {error ? <p className="error">{error}</p> : null}
-        <button type="submit" disabled={pending}>
-          {pending ? "Comparing…" : "Compare"}
-        </button>
-        <button
-          type="button"
-          onClick={() => {
-            setSlipFat("")
-            setHigher(null)
-            setError("")
-          }}
-        >
-          Clear slip
-        </button>
+        <p id="slip-hint" className={error ? "error" : "hint"}>
+          {error || "Required. From 1 to 12. This page forgets it when you leave."}
+        </p>
+        <div className="form-actions">
+          <button type="submit" disabled={pending} aria-busy={pending}>
+            {pending ? "Comparing…" : "Compare"}
+          </button>
+          <button
+            className="quiet"
+            type="button"
+            onClick={() => {
+              setSlipFat("")
+              setHigher(null)
+              setError("")
+            }}
+          >
+            Clear slip
+          </button>
+        </div>
       </form>
       {higher != null && higher > 1 ? (
         <p className="argue">
@@ -83,8 +101,10 @@ export function Slip() {
         </p>
       ) : null}
       {higher != null && higher <= 1 ? (
-        <p>One wallet cannot change the society. {higher} reading{higher === 1 ? " is" : "s are"} above this slip.</p>
+        <p className="hint">
+          One wallet cannot change the society. {higher} reading{higher === 1 ? " is" : "s are"} above this slip.
+        </p>
       ) : null}
-    </section>
+    </SocietyScreen>
   )
 }

@@ -2,7 +2,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { AboutSlip } from "./screens/AboutSlip"
 import { File } from "./screens/File"
 import { Landing } from "./screens/Landing"
-import { Layout } from "./screens/Layout"
 import { Open } from "./screens/Open"
 import { Reading } from "./screens/Reading"
 import { Slip } from "./screens/Slip"
@@ -18,11 +17,9 @@ export function App() {
         <Route path="slip" element={<AboutSlip />} />
         <Route path="wallet" element={<Wallet />} />
         <Route path="open" element={<Open />} />
-        <Route element={<Layout />}>
-          <Route path="s/:area/:society/:shift" element={<Today />} />
-          <Route path="s/:area/:society/:shift/slip" element={<Slip />} />
-          <Route path="s/:area/:society/:shift/file" element={<File />} />
-        </Route>
+        <Route path="s/:area/:society/:shift" element={<Today />} />
+        <Route path="s/:area/:society/:shift/slip" element={<Slip />} />
+        <Route path="s/:area/:society/:shift/file" element={<File />} />
       </Routes>
     </BrowserRouter>
   )

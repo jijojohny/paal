@@ -4,8 +4,8 @@ import { creatorAddress } from "../arkiv/write"
 import { isShift } from "../arkiv/labels"
 import { fetchSpread, type SpreadRow } from "../arkiv/readings"
 import { watchReadings } from "../arkiv/watch"
-import { filePath } from "./paths"
-import { SocietyHeader } from "./SocietyHeader"
+import { filePath, slipPath } from "./paths"
+import { SocietyHeader, SocietyScreen } from "./SocietyHeader"
 
 type Status = "loading" | "ready" | "error"
 
@@ -42,15 +42,17 @@ export function Today() {
 
   if (!isShift(shift)) {
     return (
-      <section>
+      <SocietyScreen>
         <h1>Unknown shift</h1>
-        <Link to="/open">Open a society</Link>
-      </section>
+        <Link className="landing-solid" to="/open">
+          Open a society
+        </Link>
+      </SocietyScreen>
     )
   }
 
   return (
-    <section>
+    <SocietyScreen>
       <SocietyHeader area={area} society={society} shift={shift} />
       {status === "loading" ? <p aria-busy="true">Reading the board…</p> : null}
       {status === "error" ? (
@@ -62,17 +64,20 @@ export function Today() {
         </div>
       ) : null}
       {status === "ready" && rows.length === 0 ? (
-        <div>
-          <p>No readings for this shift yet.</p>
-          <Link to={filePath(area, society, shift)}>File what the glass showed</Link>
+        <div className="board-empty">
+          <p>No readings for this shift yet. The count is this query. It is not saved.</p>
+          <Link className="landing-solid" to={filePath(area, society, shift)}>
+            File what the glass showed
+          </Link>
         </div>
       ) : null}
       {status === "ready" && rows.length > 0 ? (
         <>
-          <p className="figure">
-            <strong>{rows.length}</strong> {rows.length === 1 ? "wallet" : "wallets"} filed
+          <p className="board-count">
+            <strong>{rows.length}</strong> {rows.length === 1 ? "wallet" : "wallets"} filed. The count is this
+            query. It is not saved.
           </p>
-          <ul className="rows">
+          <ul className="board-list">
             {rows.map((row) => (
               <li key={row.creator}>
                 <span>Fat {row.fat}</span>
@@ -81,8 +86,11 @@ export function Today() {
               </li>
             ))}
           </ul>
+          <Link className="landing-ghost" to={slipPath(area, society, shift)}>
+            Compare a paper slip
+          </Link>
         </>
       ) : null}
-    </section>
+    </SocietyScreen>
   )
 }

@@ -564,6 +564,121 @@ h1 {
   color: var(--muted);
 }
 
+.society-page {
+  max-width: 46rem;
+}
+
+.society .eyebrow {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.society h1 {
+  margin: 0.2rem 0 0.35rem;
+  text-transform: capitalize;
+}
+
+.society-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0 1.25rem;
+}
+
+.society-nav a {
+  min-height: 2.5rem;
+  padding: 0 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 0.45rem;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.society-nav a.active {
+  color: var(--ink);
+  border-color: var(--accent);
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  align-items: center;
+  margin-top: 0.4rem;
+}
+
+.open-form .form-actions button,
+.filed .form-actions button,
+.society-page > div > button.quiet {
+  margin-top: 0;
+}
+
+.open-form button.quiet,
+.filed button.quiet,
+.society-page button.quiet {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--ghost);
+}
+
+.board-count,
+.board-empty p,
+.filed p,
+.society-page > h2 {
+  margin: 0 0 0.75rem;
+}
+
+.society-page > h2 {
+  font-size: 1.25rem;
+}
+
+.board-list {
+  list-style: none;
+  display: grid;
+  gap: 0.5rem;
+  margin: 0 0 1rem;
+  padding: 0;
+}
+
+.board-list li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem 1.2rem;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: 0.45rem;
+  background: var(--card);
+}
+
+.board-list em {
+  margin-left: auto;
+  font-style: normal;
+  color: var(--accent);
+}
+
+.society-page .error,
+.society-page .argue {
+  color: #ffb4b4;
+}
+
+.society-page .argue span {
+  display: block;
+  margin-top: 0.35rem;
+}
+
+.board-empty .landing-solid,
+.filed .landing-solid,
+.society-page > .landing-solid {
+  margin-top: 0.4rem;
+}
+
 @media (max-width: 860px) {
   .landing-bar {
     flex-wrap: wrap;

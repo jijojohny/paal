@@ -1,6 +1,17 @@
-import { Link } from "react-router-dom"
+import type { ReactNode } from "react"
+import { NavLink } from "react-router-dom"
 import type { Shift } from "../arkiv/labels"
+import { SiteHeader } from "./SiteHeader"
 import { filePath, slipPath, todayPath } from "./paths"
+
+export function SocietyScreen({ children }: { children: ReactNode }) {
+  return (
+    <div className="landing">
+      <SiteHeader />
+      <article className="landing-page society-page">{children}</article>
+    </div>
+  )
+}
 
 export function SocietyNav({
   area,
@@ -12,10 +23,12 @@ export function SocietyNav({
   shift: Shift
 }) {
   return (
-    <nav className="subnav" aria-label="This society">
-      <Link to={todayPath(area, society, shift)}>Today</Link>
-      <Link to={slipPath(area, society, shift)}>Slip</Link>
-      <Link to={filePath(area, society, shift)}>File</Link>
+    <nav className="society-nav" aria-label="This society">
+      <NavLink end to={todayPath(area, society, shift)}>
+        Today
+      </NavLink>
+      <NavLink to={slipPath(area, society, shift)}>Slip</NavLink>
+      <NavLink to={filePath(area, society, shift)}>File</NavLink>
     </nav>
   )
 }
