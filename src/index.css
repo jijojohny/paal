@@ -470,6 +470,37 @@ h1 {
   color: var(--ink);
 }
 
+.reading-note .reading-lead {
+  color: var(--ink);
+  font-size: 1.15rem;
+}
+
+.reading-note h2 {
+  margin: 1.6rem 0 0.45rem;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.reading-note ul {
+  margin: 0 0 0.2rem;
+  padding: 0;
+  list-style: none;
+}
+
+.reading-note li {
+  margin: 0 0 0.35rem;
+  color: var(--ink);
+  font-size: 1.05rem;
+  line-height: 1.45;
+}
+
+.reading-note .landing-solid {
+  margin-top: 1.4rem;
+}
+
 .landing-page .landing-solid,
 .landing-page .landing-ghost {
   margin-top: 0.6rem;

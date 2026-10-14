@@ -7,10 +7,21 @@ export function Reading() {
   return (
     <div className="landing">
       <SiteHeader />
-      <article className="landing-page">
+      <article className="landing-page reading-note">
         <h1>{t.reading}</h1>
-        <p>{t.readingP1}</p>
-        <p>{t.readingP2}</p>
+        <p className="reading-lead">{t.readingLead}</p>
+        <h2>{t.readingHolds}</h2>
+        <ul>
+          <li>{t.readingFatLine}</li>
+          <li>{t.readingSnfLine}</li>
+          <li>{t.readingPlaceLine}</li>
+        </ul>
+        <h2>{t.readingLeaves}</h2>
+        <p>{t.readingLeavesBody}</p>
+        <h2>{t.readingOnce}</h2>
+        <p>{t.readingOnceBody}</p>
+        <h2>{t.readingMidnight}</h2>
+        <p>{t.readingMidnightBody}</p>
         <Link className="landing-solid" to="/open">
           {t.openSociety}
         </Link>

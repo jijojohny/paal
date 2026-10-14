@@ -26,8 +26,21 @@ const en = {
   onGlassBody: "Fat and SNF other phones file for this society and this shift. One phone, one reading.",
   onSlip: "On the slip",
   onSlipBody: "The number on the paper. Compared on that screen, and never written.",
-  readingP1: "One phone files one fat and one SNF for this society and this shift. A second filing is refused.",
-  readingP2: "Fat and SNF other phones file for this society and this shift. One phone, one reading.",
+  readingLead:
+    "A reading is the fat and SNF one phone saw on the analyser, for one society and one shift.",
+  readingHolds: "What is filed",
+  readingFatLine: "Fat, from 1 to 12.",
+  readingSnfLine: "SNF, from 6 to 12.",
+  readingPlaceLine: "The district or union, the society name, and morning or evening.",
+  readingLeaves: "What stays off it",
+  readingLeavesBody:
+    "The paper slip, the pourer's name, phone, farmer code, litres, and the rupee rate are not filed.",
+  readingOnce: "One phone, one reading",
+  readingOnceBody:
+    "A second filing from the same phone is refused. If the fat was mistyped, that phone can remove its own reading and file again.",
+  readingMidnight: "Until midnight",
+  readingMidnightBody:
+    "The reading stays on this shift's board, then dies at midnight in India. Tomorrow's board starts empty.",
   slipP1: "The number on the paper stays on that screen. It is compared here and never written.",
   slipP2: "A pourer types the fat printed on the paper slip. The slip is never stored.",
   walletBody: "One phone is one witness. This address is not written into the reading as a name.",
@@ -120,8 +133,21 @@ const ta: Copy = {
   onGlassBody: "இந்த சங்கம், இந்த முறைக்கு மற்ற தொலைபேசிகள் கொழுப்பையும் SNF-ஐயும் பதிக்கின்றன. ஒரு தொலைபேசி, ஒரு அளவீடு.",
   onSlip: "சீட்டில்",
   onSlipBody: "காகிதத்தில் உள்ள எண். அந்தத் திரையில் ஒப்பிடப்படும். எழுதப்படாது.",
-  readingP1: "ஒரு தொலைபேசி இந்த சங்கம், இந்த முறைக்கு ஒரு கொழுப்பும் ஒரு SNF-உம் பதிக்கும். இரண்டாவது பதிவு மறுக்கப்படும்.",
-  readingP2: "மற்ற தொலைபேசிகள் இந்த சங்கம், இந்த முறைக்கு கொழுப்பையும் SNF-ஐயும் பதிக்கின்றன. ஒரு தொலைபேசி, ஒரு அளவீடு.",
+  readingLead:
+    "ஒரு அளவீடு என்பது ஒரு தொலைபேசி பகுப்பாய்வியில் பார்த்த கொழுப்பும் SNF-உம். ஒரு சங்கம், ஒரு முறை.",
+  readingHolds: "பதிக்கப்படுவது",
+  readingFatLine: "கொழுப்பு, 1 முதல் 12 வரை.",
+  readingSnfLine: "SNF, 6 முதல் 12 வரை.",
+  readingPlaceLine: "மாவட்டம் அல்லது ஒன்றியம், சங்கத்தின் பெயர், காலை அல்லது மாலை.",
+  readingLeaves: "பதிக்கப்படாதது",
+  readingLeavesBody:
+    "காகித சீட்டு, ஊற்றுபவரின் பெயர், தொலைபேசி எண், உறுப்பினர் குறியீடு, லிட்டர், ரூபாய் விலை ஆகியவை பதிக்கப்படாது.",
+  readingOnce: "ஒரு தொலைபேசி, ஒரு அளவீடு",
+  readingOnceBody:
+    "அதே தொலைபேசியின் இரண்டாவது பதிவு மறுக்கப்படும். கொழுப்பு தவறாக இருந்தால் அந்தத் தொலைபேசி தன் அளவீட்டை நீக்கி மீண்டும் பதிக்கலாம்.",
+  readingMidnight: "நள்ளிரவு வரை",
+  readingMidnightBody:
+    "அளவீடு இந்த முறையின் பலகையில் இருக்கும். இந்திய நேரப்படி நள்ளிரவில் அது மறையும். நாளைய பலகை காலியாகத் தொடங்கும்.",
   slipP1: "காகிதத்தில் உள்ள எண் அந்தத் திரையிலேயே இருக்கும். ஒப்பிடப்படும். எழுதப்படாது.",
   slipP2: "ஊற்றுபவர் காகித சீட்டில் அச்சிடப்பட்ட கொழுப்பை உள்ளிடுகிறார். சீட்டு சேமிக்கப்படாது.",
   walletBody: "ஒரு தொலைபேசி ஒரு சாட்சி. இந்த முகவரி அளவீட்டில் பெயராக எழுதப்படாது.",
@@ -211,8 +237,21 @@ const hi: Copy = {
   onGlassBody: "इस सोसाइटी और इस पाली के लिए दूसरे फ़ोन फैट और SNF दर्ज करते हैं. एक फ़ोन, एक रीडिंग.",
   onSlip: "पर्ची पर",
   onSlipBody: "कागज़ पर छपा अंक. उसी स्क्रीन पर तुलना होती है, और वह लिखा नहीं जाता.",
-  readingP1: "एक फ़ोन इस सोसाइटी और इस पाली के लिए एक फैट और एक SNF दर्ज करता है. दूसरी दर्ज मना है.",
-  readingP2: "दूसरे फ़ोन इस सोसाइटी और इस पाली के लिए फैट और SNF दर्ज करते हैं. एक फ़ोन, एक रीडिंग.",
+  readingLead:
+    "एक रीडिंग वह फैट और SNF है जो एक फ़ोन ने विश्लेषक पर देखा, एक सोसाइटी और एक पाली के लिए.",
+  readingHolds: "क्या दर्ज होता है",
+  readingFatLine: "फैट, 1 से 12.",
+  readingSnfLine: "SNF, 6 से 12.",
+  readingPlaceLine: "ज़िला या यूनियन, सोसाइटी का नाम, और सुबह या शाम.",
+  readingLeaves: "क्या दर्ज नहीं होता",
+  readingLeavesBody:
+    "कागज़ की पर्ची, उडेलने वाले का नाम, फ़ोन, किसान कोड, लीटर, और रुपए का भाव दर्ज नहीं होते.",
+  readingOnce: "एक फ़ोन, एक रीडिंग",
+  readingOnceBody:
+    "उसी फ़ोन की दूसरी दर्ज मना है. फैट गलत हो तो वह फ़ोन अपनी रीडिंग हटाकर फिर दर्ज कर सकता है.",
+  readingMidnight: "आधी रात तक",
+  readingMidnightBody:
+    "रीडिंग इस पाली के बोर्ड पर रहती है. भारत में आधी रात को वह मिट जाती है. कल का बोर्ड खाली शुरू होता है.",
   slipP1: "कागज़ का अंक उसी स्क्रीन पर रहता है. यहाँ तुलना होती है, और वह लिखा नहीं जाता.",
   slipP2: "दूध उडेलने वाला पर्ची पर छपा फैट लिखता है. पर्ची सहेजी नहीं जाती.",
   walletBody: "एक फ़ोन एक गवाह है. यह पता रीडिंग में नाम की तरह नहीं लिखा जाता.",
