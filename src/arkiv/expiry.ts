@@ -13,6 +13,12 @@ export function defaultShift(now = new Date()): Shift {
   return hour < 14 ? "morning" : "evening"
 }
 
+/** Whole minutes until the next midnight in India. Zero once that midnight has passed. */
+export function minutesUntilMidnight(now = new Date()): number {
+  const left = nextIstMidnight(now).getTime() - now.getTime()
+  return Math.max(0, Math.floor(left / 60_000))
+}
+
 /** The next local midnight in India. `atDate` may round this up by one block. */
 export function nextIstMidnight(now = new Date()): Date {
   const parts = new Intl.DateTimeFormat("en-CA", {

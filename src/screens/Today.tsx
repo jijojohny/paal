@@ -7,6 +7,20 @@ import { watchReadings } from "../arkiv/watch"
 import { explainFailure } from "../i18n/copy"
 import { useLanguage } from "../i18n/language"
 import { filePath, slipPath } from "./paths"
+
+function byFat(rows: SpreadRow[]): SpreadRow[] {
+  return [...rows].sort((a, b) => Number(b.fat) - Number(a.fat) || Number(b.snf) - Number(a.snf))
+}
+
+function fatBounds(rows: SpreadRow[]): { low: string; high: string } {
+  let low = rows[0]
+  let high = rows[0]
+  for (const row of rows) {
+    if (Number(row.fat) < Number(low.fat)) low = row
+    if (Number(row.fat) > Number(high.fat)) high = row
+  }
+  return { low: low.fat, high: high.fat }
+}
 import { SocietyHeader, SocietyScreen } from "./SocietyHeader"
 
 type Status = "loading" | "ready" | "error"
@@ -79,8 +93,9 @@ export function Today() {
       {status === "ready" && rows.length > 0 ? (
         <>
           <p className="board-count">{t.walletCount(rows.length)}</p>
+          <p className="board-count">{t.spreadLine(fatBounds(rows).low, fatBounds(rows).high)}</p>
           <ul className="board-list">
-            {rows.map((row) => (
+            {byFat(rows).map((row) => (
               <li key={row.creator}>
                 <span>
                   {t.fat} {row.fat}

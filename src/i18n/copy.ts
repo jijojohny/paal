@@ -65,6 +65,17 @@ const en = {
   file: "File",
   thisSociety: "This society",
   shiftDies: (name: string) => `${name} shift. Readings die at midnight in India.`,
+  timeLeft: (minutes: number) => {
+    if (minutes <= 0) return "Midnight in India. This board is emptying."
+    const hours = Math.floor(minutes / 60)
+    const rest = minutes % 60
+    if (hours === 0) return `${rest} minutes until midnight in India.`
+    if (rest === 0) return `${hours} ${hours === 1 ? "hour" : "hours"} until midnight in India.`
+    return `${hours} ${hours === 1 ? "hour" : "hours"} ${rest} minutes until midnight in India.`
+  },
+  copyLink: "Copy link",
+  linkCopied: "Copied. Another phone can open this page.",
+  linkCopyFailed: "The copy failed. Select the link below.",
   readingBoard: "Reading the board…",
   boardFailed: "The board did not load.",
   tryAgain: "Try again",
@@ -72,6 +83,11 @@ const en = {
   fileGlass: "File what the glass showed",
   walletCount: (n: number) =>
     `${n} ${n === 1 ? "wallet" : "wallets"} filed. The count is this query. It is not saved.`,
+  spreadLine: (low: string, high: string) =>
+    Number(low) === Number(high)
+      ? `Every filing is fat ${low}. The spread is this query. It is not saved.`
+      : `Fat runs from ${low} to ${high}. The spread is this query. It is not saved.`,
+  aboveSlip: "Above this slip",
   thisPhone: "This phone",
   compareSlip: "Compare a paper slip",
   paperSlip: "The paper slip",
@@ -172,6 +188,17 @@ const ta: Copy = {
   file: "பதிவு",
   thisSociety: "இந்த சங்கம்",
   shiftDies: (name) => `${name} முறை. அளவீடுகள் இந்திய நேரப்படி நள்ளிரவில் மறையும்.`,
+  timeLeft: (minutes) => {
+    if (minutes <= 0) return "இந்திய நேரப்படி நள்ளிரவு. இந்தப் பலகை காலியாகிறது."
+    const hours = Math.floor(minutes / 60)
+    const rest = minutes % 60
+    if (hours === 0) return `நள்ளிரவுக்கு ${rest} நிமிடம்.`
+    if (rest === 0) return `நள்ளிரவுக்கு ${hours} மணி.`
+    return `நள்ளிரவுக்கு ${hours} மணி ${rest} நிமிடம்.`
+  },
+  copyLink: "இணைப்பை நகலெடு",
+  linkCopied: "நகலெடுக்கப்பட்டது. மற்றொரு தொலைபேசி இந்தப் பக்கத்தைத் திறக்கும்.",
+  linkCopyFailed: "நகல் தோல்வி. கீழுள்ள இணைப்பைத் தேர்ந்தெடுங்கள்.",
   readingBoard: "பலகையைப் படிக்கிறது…",
   boardFailed: "பலகை ஏறவில்லை.",
   tryAgain: "மீண்டும் முயலுங்கள்",
@@ -179,6 +206,11 @@ const ta: Copy = {
   fileGlass: "கண்ணாடி காட்டியதைப் பதி",
   walletCount: (n) =>
     `${n} ${n === 1 ? "பணப்பை" : "பணப்பைகள்"} பதித்தன. எண்ணிக்கை இந்த வினவல். அது சேமிக்கப்படாது.`,
+  spreadLine: (low, high) =>
+    Number(low) === Number(high)
+      ? `எல்லா பதிவும் கொழுப்பு ${low}. பரவல் இந்த வினவல். அது சேமிக்கப்படாது.`
+      : `கொழுப்பு ${low} முதல் ${high} வரை. பரவல் இந்த வினவல். அது சேமிக்கப்படாது.`,
+  aboveSlip: "இந்த சீட்டுக்கு மேல்",
   thisPhone: "இந்தத் தொலைபேசி",
   compareSlip: "காகித சீட்டை ஒப்பிடு",
   paperSlip: "காகித சீட்டு",
@@ -276,6 +308,17 @@ const hi: Copy = {
   file: "दर्ज",
   thisSociety: "यह सोसाइटी",
   shiftDies: (name) => `${name} पाली. रीडिंग भारत में आधी रात को मिटती है.`,
+  timeLeft: (minutes) => {
+    if (minutes <= 0) return "भारत में आधी रात. यह बोर्ड खाली हो रहा है."
+    const hours = Math.floor(minutes / 60)
+    const rest = minutes % 60
+    if (hours === 0) return `आधी रात तक ${rest} मिनट.`
+    if (rest === 0) return `आधी रात तक ${hours} घंटे.`
+    return `आधी रात तक ${hours} घंटे ${rest} मिनट.`
+  },
+  copyLink: "लिंक कॉपी करें",
+  linkCopied: "कॉपी हो गया. दूसरा फ़ोन यह पन्ना खोल सकता है.",
+  linkCopyFailed: "कॉपी नहीं हुई. नीचे का लिंक चुनें.",
   readingBoard: "बोर्ड पढ़ा जा रहा है…",
   boardFailed: "बोर्ड नहीं खुला.",
   tryAgain: "फिर कोशिश करें",
@@ -283,6 +326,11 @@ const hi: Copy = {
   fileGlass: "काँच पर जो दिखा वह दर्ज करें",
   walletCount: (n) =>
     `${n} ${n === 1 ? "वॉलेट ने" : "वॉलेट ने"} दर्ज किया. गिनती इसी पूछताछ की है. वह सहेजी नहीं जाती.`,
+  spreadLine: (low, high) =>
+    Number(low) === Number(high)
+      ? `हर दर्ज फैट ${low} है. फैलाव इसी पूछताछ का है. वह सहेजा नहीं जाता.`
+      : `फैट ${low} से ${high} तक है. फैलाव इसी पूछताछ का है. वह सहेजा नहीं जाता.`,
+  aboveSlip: "इस पर्ची से ऊपर",
   thisPhone: "यह फ़ोन",
   compareSlip: "कागज़ की पर्ची तुलना करें",
   paperSlip: "कागज़ की पर्ची",
