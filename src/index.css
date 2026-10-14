@@ -1,5 +1,5 @@
 :root {
-  color-scheme: light dark;
+  color-scheme: dark;
   --bg: #f4f1ea;
   --fg: #1c1915;
   --muted: #5c564c;
@@ -26,6 +26,14 @@
 }
 
 * { box-sizing: border-box; }
+
+html,
+body,
+#root {
+  min-height: 100%;
+  background: #0f0f0f;
+  scrollbar-color: #2e2e34 #0f0f0f;
+}
 
 body {
   margin: 0;
@@ -189,7 +197,8 @@ h1 {
   display: flex;
   align-items: center;
   gap: 1.5rem;
-  padding: 1rem 1.5rem;
+  padding: max(1rem, env(safe-area-inset-top)) max(1.5rem, env(safe-area-inset-right)) 1rem
+    max(1.5rem, env(safe-area-inset-left));
 }
 
 .landing-mark {
@@ -251,9 +260,10 @@ h1 {
 .lang-menu {
   position: absolute;
   top: calc(100% + 0.4rem);
-  right: 0;
+  inset-inline-end: 0;
   z-index: 5;
   min-width: 9.5rem;
+  max-width: calc(100vw - 2rem);
   margin: 0;
   padding: 0.35rem;
   list-style: none;
@@ -334,7 +344,7 @@ h1 {
   flex-wrap: wrap;
   gap: 0.35rem 1.25rem;
   margin: 0;
-  padding: 0.55rem 1.5rem;
+  padding: 0.55rem max(1.5rem, env(safe-area-inset-right)) 0.55rem max(1.5rem, env(safe-area-inset-left));
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
   color: var(--muted);
@@ -356,7 +366,7 @@ h1 {
   align-items: center;
   max-width: 76rem;
   margin: 0 auto;
-  padding: 4.5rem 1.5rem 3.5rem;
+  padding: 4.5rem max(1.5rem, env(safe-area-inset-right)) 3.5rem max(1.5rem, env(safe-area-inset-left));
 }
 
 .landing-copy h1 {
@@ -448,7 +458,8 @@ h1 {
 .landing-page {
   max-width: 40rem;
   margin: 0 auto;
-  padding: 3.5rem 1.5rem 4rem;
+  padding: 3.5rem max(1.5rem, env(safe-area-inset-right)) max(2rem, env(safe-area-inset-bottom))
+    max(1.5rem, env(safe-area-inset-left));
 }
 
 .landing-page h1 {
@@ -521,6 +532,7 @@ h1 {
 }
 
 .open-form input {
+  width: 100%;
   min-height: 2.75rem;
   padding: 0.4rem 0.7rem;
   border: 1px solid var(--ghost);
@@ -637,7 +649,9 @@ h1 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+  min-width: 0;
   min-height: 2.75rem;
   padding: 0.55rem 0.8rem;
   border: 1px solid var(--line);
@@ -664,6 +678,7 @@ h1 {
 
 .society h1 {
   margin: 0.2rem 0 0.35rem;
+  overflow-wrap: anywhere;
   text-transform: capitalize;
 }
 
@@ -708,7 +723,8 @@ h1 {
 }
 
 .share-link input {
-  width: min(100%, 36rem);
+  width: 100%;
+  max-width: 36rem;
   min-height: 2.75rem;
   padding: 0 0.75rem;
   border: 1px solid var(--line);
@@ -817,28 +833,49 @@ h1 {
 
 @media (max-width: 860px) {
   .landing-bar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.75rem 0.5rem;
+    padding: max(0.75rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right)) 0.75rem
+      max(1rem, env(safe-area-inset-left));
+  }
+
+  .landing-mark {
+    grid-column: 1;
+    grid-row: 1;
+    margin-right: 0;
+    min-width: 0;
+    white-space: normal;
     flex-wrap: wrap;
-    row-gap: 0.35rem;
-    padding: 0.75rem 1rem;
-    gap: 0.75rem;
+  }
+
+  .lang-switch {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+  }
+
+  .landing-nav {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 0.35rem 1rem;
   }
 
   .landing-bar > .landing-solid {
+    grid-column: 1 / -1;
+    grid-row: 3;
     width: fit-content;
-    margin-left: auto;
-    padding-inline: 0.75rem;
+    margin-left: 0;
+    justify-content: center;
+    padding-inline: 0.9rem;
   }
 
   .landing-ticker span + span::before {
     content: none;
     margin: 0;
-  }
-
-  .landing-nav {
-    order: 3;
-    width: 100%;
-    justify-content: flex-start;
-    gap: 1rem;
   }
 
   .landing-hero,
@@ -848,5 +885,61 @@ h1 {
 
   .landing-hero {
     padding-top: 2.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .landing-ticker,
+  .landing-hero,
+  .landing-page {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+
+  .landing-hero {
+    gap: 1.5rem;
+    padding-top: 2rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .landing-copy h1 {
+    font-size: clamp(2.05rem, 11vw, 2.7rem);
+  }
+
+  .landing-accent {
+    width: 2.4rem;
+    margin-left: 0.3rem;
+  }
+
+  .landing-page {
+    padding-top: 2rem;
+  }
+
+  .landing-page h1 {
+    font-size: clamp(1.85rem, 9vw, 2.4rem);
+  }
+
+  .landing-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .landing-actions a,
+  .form-actions > button,
+  .form-actions > a,
+  .board-empty .landing-solid,
+  .filed .landing-solid {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+
+  .open-form > button {
+    justify-self: stretch;
+  }
+
+  .society-nav a,
+  .shift-switch a {
+    flex: 1 1 6.5rem;
+    justify-content: center;
   }
 }
