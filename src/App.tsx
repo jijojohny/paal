@@ -17,8 +17,8 @@ export function App() {
         <Route path="reading" element={<Reading />} />
         <Route path="slip" element={<AboutSlip />} />
         <Route path="wallet" element={<Wallet />} />
+        <Route path="open" element={<Open />} />
         <Route element={<Layout />}>
-          <Route path="open" element={<Open />} />
           <Route path="s/:area/:society/:shift" element={<Today />} />
           <Route path="s/:area/:society/:shift/slip" element={<Slip />} />
           <Route path="s/:area/:society/:shift/file" element={<File />} />
