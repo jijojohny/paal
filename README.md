@@ -23,10 +23,13 @@ Test GLM: https://hub.arkiv.network/faucet
 
 ## Screens
 
-- `/` open a society
+- `/` landing
+- `/reading` how a reading works
+- `/slip` the paper slip, never stored
+- `/wallet` this phone's address
+- `/open` open a society
 - `/s/:area/:society/:shift` today's readings
 - `/s/:area/:society/:shift/slip` the paper slip
 - `/s/:area/:society/:shift/file` what the glass showed
-- `/wallet` this phone's address
 
 The data contract is in [arkiv/schema.md](arkiv/schema.md).

@@ -44,7 +44,7 @@ export function Today() {
     return (
       <section>
         <h1>Unknown shift</h1>
-        <Link to="/">Open a society</Link>
+        <Link to="/open">Open a society</Link>
       </section>
     )
   }
