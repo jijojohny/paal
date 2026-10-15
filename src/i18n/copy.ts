@@ -85,12 +85,10 @@ const en = {
   tryAgain: "Try again",
   emptyBoard: "No readings for this shift yet. The count is this query. It is not saved.",
   fileGlass: "File what the glass showed",
-  walletCount: (n: number) =>
-    `${n} ${n === 1 ? "wallet" : "wallets"} filed. The count is this query. It is not saved.`,
-  spreadLine: (low: string, high: string) =>
-    Number(low) === Number(high)
-      ? `Every filing is fat ${low}. The spread is this query. It is not saved.`
-      : `Fat runs from ${low} to ${high}. The spread is this query. It is not saved.`,
+  statWallets: "Wallets filed",
+  statSpread: "Fat spread",
+  notSaved: "Counted from this query. Not saved.",
+  slipWaiting: "Type the fat on the slip. Readings above it show here.",
   aboveSlip: "Above this slip",
   aboveBy: (gap: string) => `${gap} above the slip`,
   sameAsSlip: (n: number) =>
@@ -220,12 +218,10 @@ const ta: Copy = {
   tryAgain: "மீண்டும் முயலுங்கள்",
   emptyBoard: "இந்த முறைக்கு இன்னும் அளவீடு இல்லை. எண்ணிக்கை இந்த வினவல். அது சேமிக்கப்படாது.",
   fileGlass: "கண்ணாடி காட்டியதைப் பதி",
-  walletCount: (n) =>
-    `${n} ${n === 1 ? "பணப்பை" : "பணப்பைகள்"} பதித்தன. எண்ணிக்கை இந்த வினவல். அது சேமிக்கப்படாது.`,
-  spreadLine: (low, high) =>
-    Number(low) === Number(high)
-      ? `எல்லா பதிவும் கொழுப்பு ${low}. பரவல் இந்த வினவல். அது சேமிக்கப்படாது.`
-      : `கொழுப்பு ${low} முதல் ${high} வரை. பரவல் இந்த வினவல். அது சேமிக்கப்படாது.`,
+  statWallets: "பதித்த பணப்பைகள்",
+  statSpread: "கொழுப்பு பரவல்",
+  notSaved: "இந்த வினவலில் எண்ணப்பட்டது. சேமிக்கப்படாது.",
+  slipWaiting: "சீட்டின் கொழுப்பை உள்ளிடுங்கள். அதைவிட அதிகமான அளவீடுகள் இங்கே தெரியும்.",
   aboveSlip: "இந்த சீட்டுக்கு மேல்",
   aboveBy: (gap) => `சீட்டை விட ${gap} அதிகம்`,
   sameAsSlip: (n) => `${n} அளவீடு இந்த சீட்டின் கொழுப்புடன் ஒன்றாக உள்ளது.`,
@@ -351,12 +347,10 @@ const hi: Copy = {
   tryAgain: "फिर कोशिश करें",
   emptyBoard: "इस पाली की अभी कोई रीडिंग नहीं. गिनती इसी पूछताछ की है. वह सहेजी नहीं जाती.",
   fileGlass: "काँच पर जो दिखा वह दर्ज करें",
-  walletCount: (n) =>
-    `${n} ${n === 1 ? "वॉलेट ने" : "वॉलेट ने"} दर्ज किया. गिनती इसी पूछताछ की है. वह सहेजी नहीं जाती.`,
-  spreadLine: (low, high) =>
-    Number(low) === Number(high)
-      ? `हर दर्ज फैट ${low} है. फैलाव इसी पूछताछ का है. वह सहेजा नहीं जाता.`
-      : `फैट ${low} से ${high} तक है. फैलाव इसी पूछताछ का है. वह सहेजा नहीं जाता.`,
+  statWallets: "दर्ज वॉलेट",
+  statSpread: "फैट फैलाव",
+  notSaved: "इसी पूछताछ से गिना गया. सहेजा नहीं जाता.",
+  slipWaiting: "पर्ची का फैट लिखें. उससे ऊँची रीडिंग यहाँ दिखेंगी.",
   aboveSlip: "इस पर्ची से ऊपर",
   aboveBy: (gap) => `पर्ची से ${gap} ऊपर`,
   sameAsSlip: (n) => `${n} रीडिंग इस पर्ची के फैट के बराबर ${n === 1 ? "है" : "हैं"}.`,

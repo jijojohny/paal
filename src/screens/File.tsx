@@ -122,137 +122,158 @@ export function File() {
   return (
     <SocietyScreen>
       <SocietyHeader area={area} society={society} shift={shift} />
-      <h2>{t.glassTitle}</h2>
-      <p>{t.glassLead}</p>
-      {witness ? (
-        <div className="share-link">
-          <h2>{t.witnessForBoard}</h2>
-          <p>{t.witnessHint}</p>
-          <p className="address">{witness}</p>
-          <button
-            type="button"
-            className="quiet"
-            onClick={() => {
-              navigator.clipboard.writeText(witness).then(
-                () => setCopyNote("copied"),
-                () => setCopyNote("failed"),
-              )
-            }}
-          >
-            {t.copyAddress}
-          </button>
-          {copyNote === "copied" ? <p aria-live="polite">{t.addressCopied}</p> : null}
-          {copyNote === "failed" ? (
-            <p className="error" aria-live="polite">
-              {t.addressCopyFailed}
+      <div className="society-grid society-grid-wide">
+        <section className="panel">
+          <h2>{t.glassTitle}</h2>
+          <p>{t.glassLead}</p>
+          {status === "loading" ? <p aria-busy="true">{t.checking}</p> : null}
+          {status === "error" ? (
+            <div className="panel-alert">
+              <p className="error">{message}</p>
+              <button
+                className="quiet"
+                type="button"
+                onClick={() => {
+                  setStatus("loading")
+                  if (!isShift(shift)) return
+                  findMine(creatorAddress(area, society, shift), area, society, shift)
+                    .then((reading) => {
+                      setMine(reading)
+                      setMessage("")
+                      setFaucet(false)
+                      setStatus("ready")
+                    })
+                    .catch((cause: unknown) => {
+                      const explained = explainFailure(cause, t)
+                      setMessage(explained.text)
+                      setFaucet(explained.faucet)
+                      setStatus("error")
+                    })
+                }}
+              >
+                {t.tryAgain}
+              </button>
+            </div>
+          ) : null}
+          {status === "ready" && mine ? (
+            <div className="filed">
+              <div className="stats">
+                <div className="stat">
+                  <span className="stat-label">{t.fat}</span>
+                  <strong>{mine.fat}</strong>
+                </div>
+                <div className="stat">
+                  <span className="stat-label">{t.snf}</span>
+                  <strong>{mine.snf}</strong>
+                </div>
+              </div>
+              <p>{t.alreadyFiled(mine.fat, mine.snf)}</p>
+              <div className="form-actions">
+                <Link className="landing-solid" to={todayPath(area, society, shift)}>
+                  {t.seeBoard}
+                </Link>
+                <button className="quiet" type="button" disabled={pending} onClick={() => void onRemove()}>
+                  {pending ? t.removing : t.remove}
+                </button>
+              </div>
+            </div>
+          ) : null}
+          {status === "ready" && !mine ? (
+            <form className="open-form" onSubmit={(event) => void onSubmit(event)} noValidate>
+              <div className="field-pair">
+                <div className="field">
+                  <label htmlFor="fat">
+                    {t.fat}
+                    <input
+                      id="fat"
+                      ref={fatRef}
+                      name="fat"
+                      inputMode="decimal"
+                      autoComplete="off"
+                      spellCheck={false}
+                      placeholder="3.5"
+                      value={fat}
+                      aria-invalid={invalid === "fat"}
+                      aria-describedby="fat-hint"
+                      onChange={(event) => {
+                        setFat(event.target.value)
+                        if (invalid === "fat") setInvalid(null)
+                      }}
+                    />
+                  </label>
+                  <p id="fat-hint" className={invalid === "fat" ? "error" : "hint"}>
+                    {invalid === "fat" ? t.errFat : t.fatHint}
+                  </p>
+                </div>
+                <div className="field">
+                  <label htmlFor="snf">
+                    {t.snf}
+                    <input
+                      id="snf"
+                      ref={snfRef}
+                      name="snf"
+                      inputMode="decimal"
+                      autoComplete="off"
+                      spellCheck={false}
+                      placeholder="8.5"
+                      value={snf}
+                      aria-invalid={invalid === "snf"}
+                      aria-describedby="snf-hint"
+                      onChange={(event) => {
+                        setSnf(event.target.value)
+                        if (invalid === "snf") setInvalid(null)
+                      }}
+                    />
+                  </label>
+                  <p id="snf-hint" className={invalid === "snf" ? "error" : "hint"}>
+                    {invalid === "snf" ? t.errSnf : t.snfHint}
+                  </p>
+                </div>
+              </div>
+              <div className="form-actions">
+                <button type="submit" disabled={pending} aria-busy={pending}>
+                  {pending ? t.filing : t.fileReading}
+                </button>
+              </div>
+            </form>
+          ) : null}
+          {message && status === "ready" && !invalid ? (
+            <p className="error">
+              {message} {faucet ? <a href={FAUCET_URL}>{t.getGlm}</a> : null}
             </p>
           ) : null}
-        </div>
-      ) : null}
-      {status === "loading" ? <p aria-busy="true">{t.checking}</p> : null}
-      {status === "error" ? (
-        <div>
-          <p className="error">{message}</p>
-          <button
-            className="quiet"
-            type="button"
-            onClick={() => {
-              setStatus("loading")
-              if (!isShift(shift)) return
-              findMine(creatorAddress(area, society, shift), area, society, shift)
-                .then((reading) => {
-                  setMine(reading)
-                  setMessage("")
-                  setFaucet(false)
-                  setStatus("ready")
-                })
-                .catch((cause: unknown) => {
-                  const explained = explainFailure(cause, t)
-                  setMessage(explained.text)
-                  setFaucet(explained.faucet)
-                  setStatus("error")
-                })
-            }}
-          >
-            {t.tryAgain}
-          </button>
-        </div>
-      ) : null}
-      {status === "ready" && mine ? (
-        <div className="filed">
-          <p>{t.alreadyFiled(mine.fat, mine.snf)}</p>
-          <div className="form-actions">
-            <button className="quiet" type="button" disabled={pending} onClick={() => void onRemove()}>
-              {pending ? t.removing : t.remove}
-            </button>
-            <Link className="landing-solid" to={todayPath(area, society, shift)}>
-              {t.seeBoard}
-            </Link>
-          </div>
-        </div>
-      ) : null}
-      {status === "ready" && !mine ? (
-        <form className="open-form" onSubmit={(event) => void onSubmit(event)} noValidate>
-          <label htmlFor="fat">
-            {t.fat}
-            <input
-              id="fat"
-              ref={fatRef}
-              name="fat"
-              inputMode="decimal"
-              autoComplete="off"
-              spellCheck={false}
-              placeholder="3.5"
-              value={fat}
-              aria-invalid={invalid === "fat"}
-              aria-describedby="fat-hint"
-              onChange={(event) => {
-                setFat(event.target.value)
-                if (invalid === "fat") setInvalid(null)
-              }}
-            />
-          </label>
-          <p id="fat-hint" className={invalid === "fat" ? "error" : "hint"}>
-            {invalid === "fat" ? t.errFat : t.fatHint}
-          </p>
-          <label htmlFor="snf">
-            {t.snf}
-            <input
-              id="snf"
-              ref={snfRef}
-              name="snf"
-              inputMode="decimal"
-              autoComplete="off"
-              spellCheck={false}
-              placeholder="8.5"
-              value={snf}
-              aria-invalid={invalid === "snf"}
-              aria-describedby="snf-hint"
-              onChange={(event) => {
-                setSnf(event.target.value)
-                if (invalid === "snf") setInvalid(null)
-              }}
-            />
-          </label>
-          <p id="snf-hint" className={invalid === "snf" ? "error" : "hint"}>
-            {invalid === "snf" ? t.errSnf : t.snfHint}
-          </p>
-          <div className="form-actions">
-            <button type="submit" disabled={pending} aria-busy={pending}>
-              {pending ? t.filing : t.fileReading}
-            </button>
-            <a className="landing-ghost" href={FAUCET_URL}>
-              {t.getGlm}
-            </a>
-          </div>
-        </form>
-      ) : null}
-      {message && status === "ready" && !invalid ? (
-        <p className="error">
-          {message}{" "}
-          {faucet ? <a href={FAUCET_URL}>{t.getGlm}</a> : null}
-        </p>
-      ) : null}
+        </section>
+        {witness ? (
+          <aside className="panel witness">
+            <h2>{t.witnessForBoard}</h2>
+            <p>{t.witnessHint}</p>
+            <p className="address">{witness}</p>
+            <div className="form-actions">
+              <button
+                type="button"
+                className="quiet"
+                onClick={() => {
+                  navigator.clipboard.writeText(witness).then(
+                    () => setCopyNote("copied"),
+                    () => setCopyNote("failed"),
+                  )
+                }}
+              >
+                {t.copyAddress}
+              </button>
+              <a className="landing-ghost" href={FAUCET_URL} target="_blank" rel="noreferrer">
+                {t.getGlm}
+              </a>
+            </div>
+            {copyNote === "copied" ? <p aria-live="polite">{t.addressCopied}</p> : null}
+            {copyNote === "failed" ? (
+              <p className="error" aria-live="polite">
+                {t.addressCopyFailed}
+              </p>
+            ) : null}
+          </aside>
+        ) : null}
+      </div>
     </SocietyScreen>
   )
 }

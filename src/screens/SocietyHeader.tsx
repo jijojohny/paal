@@ -72,36 +72,47 @@ export function SocietyHeader({
 
   return (
     <header className="society">
-      <p className="eyebrow">{area}</p>
-      <h1>{society}</h1>
-      <p>{t.shiftDies(shiftLabel)}</p>
-      <p className="time-left">{t.timeLeft(minutes)}</p>
-      <div className="shift-switch">
-        {(["morning", "evening"] as const).map((item) => (
-          <Link
-            key={item}
-            to={sameScreenPath(area, society, item, pathname)}
-            aria-current={item === shift ? "page" : undefined}
-          >
-            {item === "morning" ? t.morning : t.evening}
-          </Link>
-        ))}
-      </div>
-      <SocietyNav area={area} society={society} shift={shift} />
-      <div className="share-link">
+      <div className="society-top">
+        <div className="society-name">
+          <p className="eyebrow">{area}</p>
+          <h1>{society}</h1>
+        </div>
         <button type="button" className="quiet" onClick={() => void copyLink()}>
           {t.copyLink}
         </button>
-        {notice === "copied" ? <p aria-live="polite">{t.linkCopied}</p> : null}
-        {notice === "failed" ? (
-          <>
-            <p className="error" aria-live="polite">
-              {t.linkCopyFailed}
-            </p>
-            <input readOnly value={pageUrl} aria-label={t.copyLink} onFocus={(event) => event.currentTarget.select()} />
-          </>
-        ) : null}
       </div>
+      {notice === "copied" ? (
+        <p className="society-notice" aria-live="polite">
+          {t.linkCopied}
+        </p>
+      ) : null}
+      {notice === "failed" ? (
+        <div className="society-notice">
+          <p className="error" aria-live="polite">
+            {t.linkCopyFailed}
+          </p>
+          <input readOnly value={pageUrl} aria-label={t.copyLink} onFocus={(event) => event.currentTarget.select()} />
+        </div>
+      ) : null}
+      <div className="society-meta">
+        <div className="shift-switch" role="group" aria-label={t.shift}>
+          {(["morning", "evening"] as const).map((item) => (
+            <Link
+              key={item}
+              to={sameScreenPath(area, society, item, pathname)}
+              aria-current={item === shift ? "page" : undefined}
+            >
+              {item === "morning" ? t.morning : t.evening}
+            </Link>
+          ))}
+        </div>
+        <p className="time-left">
+          <span className="pulse" aria-hidden="true" />
+          {t.timeLeft(minutes)}
+        </p>
+      </div>
+      <p className="society-rule">{t.shiftDies(shiftLabel)}</p>
+      <SocietyNav area={area} society={society} shift={shift} />
     </header>
   )
 }

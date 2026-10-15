@@ -69,77 +69,86 @@ export function Slip() {
   return (
     <SocietyScreen>
       <SocietyHeader area={area} society={society} shift={shift} />
-      <h2>{t.paperSlip}</h2>
-      <p>{t.slipStays}</p>
-      <form className="open-form" onSubmit={(event) => void onSubmit(event)} noValidate>
-        <label htmlFor="slip-fat">
-          {t.fatOnSlip}
-          <input
-            id="slip-fat"
-            ref={fatRef}
-            name="slip-fat"
-            inputMode="decimal"
-            autoComplete="off"
-            spellCheck={false}
-            placeholder="3.5"
-            value={slipFat}
-            aria-invalid={error !== ""}
-            aria-describedby="slip-hint"
-            onChange={(event) => {
-              setSlipFat(event.target.value)
-              if (error) setError("")
-            }}
-          />
-        </label>
-        <p id="slip-hint" className={error ? "error" : "hint"}>
-          {error === "slip" ? t.errSlip : error || t.slipHint}
-        </p>
-        <div className="form-actions">
-          <button type="submit" disabled={pending} aria-busy={pending}>
-            {pending ? t.comparing : t.compare}
-          </button>
-          <button
-            className="quiet"
-            type="button"
-            onClick={() => {
-              setSlipFat("")
-              setAbove(null)
-              setSlipUsed(null)
-              setSame(0)
-              setError("")
-            }}
-          >
-            {t.clearSlip}
-          </button>
-        </div>
-      </form>
-      {above != null && above.length > 1 ? (
-        <p className="argue">
-          {t.argue}
-          {lang === "ta" ? <span lang="en">{copy.en.argue}</span> : <span lang="ta">{copy.ta.argue}</span>}
-        </p>
-      ) : null}
-      {above != null && above.length <= 1 ? <p className="hint">{t.calm(above.length)}</p> : null}
-      {above != null && same > 0 ? <p className="hint">{t.sameAsSlip(same)}</p> : null}
-      {above != null && above.length > 0 && slipUsed ? (
-        <>
-          <h2>{t.aboveSlip}</h2>
-          <ul className="board-list">
-            {above.map((row) => (
-              <li key={row.creator}>
-                <span>
-                  {t.fat} {row.fat}
-                </span>
-                <span>
-                  {t.snf} {row.snf}
-                </span>
-                <span className="gap">{t.aboveBy(fatGap(row.fat, slipUsed))}</span>
-                {row.creator.toLowerCase() === mine.toLowerCase() ? <em>{t.thisPhone}</em> : null}
-              </li>
-            ))}
-          </ul>
-        </>
-      ) : null}
+      <div className="society-grid">
+        <section className="panel">
+          <h2>{t.paperSlip}</h2>
+          <p>{t.slipStays}</p>
+          <form className="open-form" onSubmit={(event) => void onSubmit(event)} noValidate>
+            <label htmlFor="slip-fat">
+              {t.fatOnSlip}
+              <input
+                id="slip-fat"
+                ref={fatRef}
+                name="slip-fat"
+                inputMode="decimal"
+                autoComplete="off"
+                spellCheck={false}
+                placeholder="3.5"
+                value={slipFat}
+                aria-invalid={error !== ""}
+                aria-describedby="slip-hint"
+                onChange={(event) => {
+                  setSlipFat(event.target.value)
+                  if (error) setError("")
+                }}
+              />
+            </label>
+            <p id="slip-hint" className={error ? "error" : "hint"}>
+              {error === "slip" ? t.errSlip : error || t.slipHint}
+            </p>
+            <div className="form-actions">
+              <button type="submit" disabled={pending} aria-busy={pending}>
+                {pending ? t.comparing : t.compare}
+              </button>
+              <button
+                className="quiet"
+                type="button"
+                onClick={() => {
+                  setSlipFat("")
+                  setAbove(null)
+                  setSlipUsed(null)
+                  setSame(0)
+                  setError("")
+                }}
+              >
+                {t.clearSlip}
+              </button>
+            </div>
+          </form>
+        </section>
+        <section className="panel" aria-live="polite">
+        {above == null ? <p className="panel-wait">{t.slipWaiting}</p> : null}
+        {above != null && above.length > 1 ? (
+          <p className="argue">
+            {t.argue}
+            {lang === "ta" ? <span lang="en">{copy.en.argue}</span> : <span lang="ta">{copy.ta.argue}</span>}
+          </p>
+        ) : null}
+        {above != null && above.length <= 1 ? <p className="calm">{t.calm(above.length)}</p> : null}
+        {above != null && same > 0 ? <p>{t.sameAsSlip(same)}</p> : null}
+        {above != null && above.length > 0 && slipUsed ? (
+          <>
+            <h2>{t.aboveSlip}</h2>
+            <ul className="board-list">
+              {above.map((row) => (
+                <li key={row.creator}>
+                  <span className="reading-value">
+                    <small>{t.fat}</small>
+                    <strong>{row.fat}</strong>
+                  </span>
+                  <span className="reading-value">
+                    <small>{t.snf}</small>
+                    <strong>{row.snf}</strong>
+                  </span>
+                  <span className="gap">{t.aboveBy(fatGap(row.fat, slipUsed))}</span>
+                  {row.creator.toLowerCase() === mine.toLowerCase() ? <em>{t.thisPhone}</em> : null}
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : null}
+      </section>
+      </div>
     </SocietyScreen>
   )
 }

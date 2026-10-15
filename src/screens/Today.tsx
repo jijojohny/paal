@@ -13,14 +13,14 @@ function byFat(rows: SpreadRow[]): SpreadRow[] {
   return [...rows].sort((a, b) => Number(b.fat) - Number(a.fat) || Number(b.snf) - Number(a.snf))
 }
 
-function fatBounds(rows: SpreadRow[]): { low: string; high: string } {
+function spreadText(rows: SpreadRow[]): string {
   let low = rows[0]
   let high = rows[0]
   for (const row of rows) {
     if (Number(row.fat) < Number(low.fat)) low = row
     if (Number(row.fat) > Number(high.fat)) high = row
   }
-  return { low: low.fat, high: high.fat }
+  return Number(low.fat) === Number(high.fat) ? low.fat : `${low.fat}–${high.fat}`
 }
 
 function isThisPhone(creator: string, mine: string): boolean {
@@ -75,9 +75,13 @@ export function Today() {
   return (
     <SocietyScreen>
       <SocietyHeader area={area} society={society} shift={shift} />
-      {status === "loading" ? <p aria-busy="true">{t.readingBoard}</p> : null}
+      {status === "loading" ? (
+        <p className="panel panel-quiet" aria-busy="true">
+          {t.readingBoard}
+        </p>
+      ) : null}
       {status === "error" ? (
-        <div className="error">
+        <div className="panel panel-alert">
           <p>
             {t.boardFailed} {message}
           </p>
@@ -87,40 +91,57 @@ export function Today() {
         </div>
       ) : null}
       {status === "ready" && rows.length === 0 ? (
-        <div className="board-empty">
+        <div className="panel panel-empty">
           <p>{t.emptyBoard}</p>
-          <Link className="landing-solid" to={filePath(area, society, shift)}>
-            {t.fileGlass}
-          </Link>
+          <div className="form-actions">
+            <Link className="landing-solid" to={filePath(area, society, shift)}>
+              {t.fileGlass}
+            </Link>
+            <Link className="landing-ghost" to={slipPath(area, society, shift)}>
+              {t.compareSlip}
+            </Link>
+          </div>
         </div>
       ) : null}
       {status === "ready" && rows.length > 0 ? (
         <>
-          <p className="board-count">{t.walletCount(rows.length)}</p>
-          <p className="board-count">{t.spreadLine(fatBounds(rows).low, fatBounds(rows).high)}</p>
-          {rows.length === 1 ? <p className="hint">{t.oneWitness}</p> : null}
+          <div className="stats">
+            <div className="stat">
+              <span className="stat-label">{t.statWallets}</span>
+              <strong>{rows.length}</strong>
+            </div>
+            <div className="stat">
+              <span className="stat-label">{t.statSpread}</span>
+              <strong>{spreadText(rows)}</strong>
+            </div>
+          </div>
+          <p className="stats-note">{t.notSaved}</p>
+          {rows.length === 1 ? <p className="callout">{t.oneWitness}</p> : null}
           {!rows.some((row) => isThisPhone(row.creator, mine)) ? (
-            <p className="hint">
-              {t.notFiled}{" "}
-              <Link to={filePath(area, society, shift)}>{t.fileGlass}</Link>
+            <p className="callout">
+              {t.notFiled} <Link to={filePath(area, society, shift)}>{t.fileGlass}</Link>
             </p>
           ) : null}
           <ul className="board-list">
             {byFat(rows).map((row) => (
               <li key={row.creator}>
-                <span>
-                  {t.fat} {row.fat}
+                <span className="reading-value">
+                  <small>{t.fat}</small>
+                  <strong>{row.fat}</strong>
                 </span>
-                <span>
-                  {t.snf} {row.snf}
+                <span className="reading-value">
+                  <small>{t.snf}</small>
+                  <strong>{row.snf}</strong>
                 </span>
                 {isThisPhone(row.creator, mine) ? <em>{t.thisPhone}</em> : null}
               </li>
             ))}
           </ul>
-          <Link className="landing-ghost" to={slipPath(area, society, shift)}>
-            {t.compareSlip}
-          </Link>
+          <div className="form-actions">
+            <Link className="landing-solid" to={slipPath(area, society, shift)}>
+              {t.compareSlip}
+            </Link>
+          </div>
         </>
       ) : null}
     </SocietyScreen>
