@@ -8,16 +8,31 @@ import type { Shift } from "./labels"
 
 const SEED_KEY = "paal.witnessSeed"
 const OLD_WALLET_KEY = "paal.walletKey"
+const TIRAMISU_HTTP = "https://rpc.tiramisu.db-chain.testnet.arkiv.network"
+const TIRAMISU_WS = "wss://rpc.tiramisu.db-chain.testnet.arkiv.network"
+
+function accessKey(): string {
+  const fromVite = import.meta.env?.VITE_ARKIV_ACCESS_KEY
+  if (typeof fromVite === "string" && fromVite.trim()) return fromVite.trim()
+  const fromNode = (globalThis as { process?: { env?: Record<string, string | undefined> } }).process?.env
+    ?.VITE_ARKIV_ACCESS_KEY
+  return typeof fromNode === "string" ? fromNode.trim() : ""
+}
+
+function authed(url: string): string {
+  const key = accessKey()
+  return key ? `${url}/${encodeURIComponent(key)}` : url
+}
 
 export const publicClient = createPublicClient({
   chain: tiramisu,
-  transport: http(),
+  transport: http(authed(TIRAMISU_HTTP)),
 })
 
 export function openWatchClient() {
   return createPublicClient({
     chain: tiramisu,
-    transport: webSocket(),
+    transport: webSocket(authed(TIRAMISU_WS)),
   })
 }
 
@@ -54,7 +69,7 @@ export function walletClientFor(account: Account) {
   return createWalletClient({
     account,
     chain: tiramisu,
-    transport: http(),
+    transport: http(authed(TIRAMISU_HTTP)),
   })
 }
 

@@ -1,7 +1,37 @@
+import { readFileSync } from "node:fs"
 import { isShift } from "../src/arkiv/labels"
-import { fetchSpread } from "../src/arkiv/readings"
 
-declare const process: { argv: string[]; exitCode?: number }
+declare const process: {
+  argv: string[]
+  env: Record<string, string | undefined>
+  exitCode?: number
+}
+
+function loadAccessKey(): void {
+  if (process.env.VITE_ARKIV_ACCESS_KEY?.trim()) return
+  try {
+    const text = [".env.local", ".env"]
+      .map((name) => {
+        try {
+          return readFileSync(new URL(`../${name}`, import.meta.url), "utf8")
+        } catch {
+          return ""
+        }
+      })
+      .join("\n")
+    for (const line of text.split("\n")) {
+      const trimmed = line.trim()
+      if (!trimmed.startsWith("VITE_ARKIV_ACCESS_KEY=")) continue
+      const value = trimmed.slice("VITE_ARKIV_ACCESS_KEY=".length).trim().replace(/^["']|["']$/g, "")
+      if (value) process.env.VITE_ARKIV_ACCESS_KEY = value
+    }
+  } catch {
+    // A missing file keeps the public quota.
+  }
+}
+
+loadAccessKey()
+const { fetchSpread } = await import("../src/arkiv/readings")
 
 const [area, society, shift] = process.argv.slice(2)
 
