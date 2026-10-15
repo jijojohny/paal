@@ -33,4 +33,4 @@ publicClient
   .limit(100)
 ```
 
-The result keeps one row per `$creator`. `createdBy(thisWallet)` is the check that stops a second reading from the same phone.
+The result keeps one row per `$creator`. The witness key is derived on this phone for this area, society, shift, and the India date. The same phone on another board is another `$creator`. `createdBy(thisWitness)` stops a second reading on this board.

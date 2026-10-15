@@ -1,9 +1,13 @@
 import { createPublicClient, createWalletClient } from "@arkiv-network/sdk"
 import { tiramisu } from "@arkiv-network/sdk/chains"
-import { http, webSocket, type Account } from "viem"
+import { encodePacked, keccak256, type Account, type Hex } from "viem"
+import { http, webSocket } from "viem"
 import { generatePrivateKey, privateKeyToAccount } from "viem/accounts"
+import { istDate } from "./expiry"
+import type { Shift } from "./labels"
 
-const WALLET_KEY = "paal.walletKey"
+const SEED_KEY = "paal.witnessSeed"
+const OLD_WALLET_KEY = "paal.walletKey"
 
 export const publicClient = createPublicClient({
   chain: tiramisu,
@@ -17,11 +21,33 @@ export function openWatchClient() {
   })
 }
 
-export function loadAccount(): Account {
-  const existing = localStorage.getItem(WALLET_KEY)
-  const privateKey = existing ?? generatePrivateKey()
-  if (!existing) localStorage.setItem(WALLET_KEY, privateKey)
-  return privateKeyToAccount(privateKey as `0x${string}`)
+function witnessSeed(): Hex {
+  const existing = localStorage.getItem(SEED_KEY)
+  if (existing) return existing as Hex
+  const migrated = localStorage.getItem(OLD_WALLET_KEY)
+  const seed = migrated ?? generatePrivateKey()
+  localStorage.setItem(SEED_KEY, seed)
+  localStorage.removeItem(OLD_WALLET_KEY)
+  return seed as Hex
+}
+
+/** A witness for one phone, one board, and one India date. Another board is another key. */
+export function witnessFromSeed(seed: Hex, area: string, society: string, shift: Shift, now = new Date()): Account {
+  const day = istDate(now)
+  let scope = `${day}|${area}|${society}|${shift}`
+  for (let attempt = 0; attempt < 5; attempt++) {
+    const privateKey = keccak256(encodePacked(["bytes32", "string"], [seed, scope]))
+    try {
+      return privateKeyToAccount(privateKey)
+    } catch {
+      scope = `${day}|${area}|${society}|${shift}|${attempt}`
+    }
+  }
+  throw new Error("Could not derive a witness.")
+}
+
+export function witnessAccount(area: string, society: string, shift: Shift, now = new Date()): Account {
+  return witnessFromSeed(witnessSeed(), area, society, shift, now)
 }
 
 export function walletClientFor(account: Account) {

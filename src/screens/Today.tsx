@@ -37,7 +37,7 @@ export function Today() {
   const [status, setStatus] = useState<Status>("loading")
   const [rows, setRows] = useState<SpreadRow[]>([])
   const [message, setMessage] = useState("")
-  const mine = creatorAddress()
+  const mine = isShift(shift) ? creatorAddress(area, society, shift) : ""
   const { t } = useLanguage()
 
   const load = useCallback(async () => {

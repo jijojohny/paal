@@ -2,6 +2,16 @@ import type { Shift } from "./labels"
 
 const IST = "Asia/Kolkata"
 
+/** Calendar date in India, `YYYY-MM-DD`. The witness changes when this changes. */
+export function istDate(now = new Date()): string {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: IST,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(now)
+}
+
 export function defaultShift(now = new Date()): Shift {
   const hour = Number(
     new Intl.DateTimeFormat("en-GB", {

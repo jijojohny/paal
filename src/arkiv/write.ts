@@ -1,7 +1,7 @@
 import { ExpirationTime } from "@arkiv-network/sdk"
 import { dec, str } from "@arkiv-network/sdk/attr"
 import type { Account, Hex } from "viem"
-import { loadAccount, publicClient, walletClientFor } from "./client"
+import { publicClient, walletClientFor, witnessAccount } from "./client"
 import { nextIstMidnight } from "./expiry"
 import { parseQuality, type Shift } from "./labels"
 import { findMine, type OwnReading } from "./readings"
@@ -23,7 +23,7 @@ export async function fileReading(
   fat: string,
   snf: string,
 ): Promise<OwnReading> {
-  return fileReadingFor(loadAccount(), area, society, shift, fat, snf)
+  return fileReadingFor(witnessAccount(area, society, shift), area, society, shift, fat, snf)
 }
 
 export async function fileReadingFor(
@@ -66,12 +66,17 @@ export async function fileReadingFor(
   return { key: entityKey, fat: nextFat, snf: nextSnf }
 }
 
-export async function removeOwnReading(entityKey: Hex): Promise<void> {
-  const wallet = walletClientFor(loadAccount())
+export async function removeOwnReading(
+  area: string,
+  society: string,
+  shift: Shift,
+  entityKey: Hex,
+): Promise<void> {
+  const wallet = walletClientFor(witnessAccount(area, society, shift))
   const { txHash } = await wallet.deleteEntity({ entityKey })
   await wallet.waitForTransactionReceipt({ hash: txHash })
 }
 
-export function creatorAddress(): Hex {
-  return loadAccount().address
+export function creatorAddress(area: string, society: string, shift: Shift): Hex {
+  return witnessAccount(area, society, shift).address
 }

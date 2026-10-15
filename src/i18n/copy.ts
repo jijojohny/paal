@@ -43,7 +43,11 @@ const en = {
     "The reading stays on this shift's board, then dies at midnight in India. Tomorrow's board starts empty.",
   slipP1: "The number on the paper stays on that screen. It is compared here and never written.",
   slipP2: "A pourer types the fat printed on the paper slip. The slip is never stored.",
-  walletBody: "One phone is one witness. This address is not written into the reading as a name.",
+  walletBody:
+    "This phone does not keep one address. Each society and shift gets its own witness until midnight in India. That address is not written into the reading as a name.",
+  witnessForBoard: "Witness for this board",
+  witnessHint:
+    "This address files only here, until midnight. Another society gets another address. Fund this one before filing.",
   getGlm: "Get test GLM",
   openLead: "Name the building. The fat on your paper slip stays on the next screen.",
   district: "District or union",
@@ -174,7 +178,11 @@ const ta: Copy = {
     "அளவீடு இந்த முறையின் பலகையில் இருக்கும். இந்திய நேரப்படி நள்ளிரவில் அது மறையும். நாளைய பலகை காலியாகத் தொடங்கும்.",
   slipP1: "காகிதத்தில் உள்ள எண் அந்தத் திரையிலேயே இருக்கும். ஒப்பிடப்படும். எழுதப்படாது.",
   slipP2: "ஊற்றுபவர் காகித சீட்டில் அச்சிடப்பட்ட கொழுப்பை உள்ளிடுகிறார். சீட்டு சேமிக்கப்படாது.",
-  walletBody: "ஒரு தொலைபேசி ஒரு சாட்சி. இந்த முகவரி அளவீட்டில் பெயராக எழுதப்படாது.",
+  walletBody:
+    "இந்தத் தொலைபேசிக்கு ஒரே முகவரி இல்லை. ஒவ்வொரு சங்கம், ஒவ்வொரு முறைக்கும் நள்ளிரவு வரை தனி சாட்சி. அந்த முகவரி அளவீட்டில் பெயராக எழுதப்படாது.",
+  witnessForBoard: "இந்தப் பலகையின் சாட்சி",
+  witnessHint:
+    "இந்த முகவரி இங்கே மட்டும், நள்ளிரவு வரை பதிக்கும். வேறு சங்கத்துக்கு வேறு முகவரி. பதிக்கும் முன் இதற்கு GLM பெறுங்கள்.",
   getGlm: "சோதனை GLM பெறு",
   openLead: "கட்டிடத்தின் பெயரைச் சொல்லுங்கள். காகித சீட்டின் கொழுப்பு அடுத்த திரையிலேயே இருக்கும்.",
   district: "மாவட்டம் அல்லது ஒன்றியம்",
@@ -301,7 +309,11 @@ const hi: Copy = {
     "रीडिंग इस पाली के बोर्ड पर रहती है. भारत में आधी रात को वह मिट जाती है. कल का बोर्ड खाली शुरू होता है.",
   slipP1: "कागज़ का अंक उसी स्क्रीन पर रहता है. यहाँ तुलना होती है, और वह लिखा नहीं जाता.",
   slipP2: "दूध उडेलने वाला पर्ची पर छपा फैट लिखता है. पर्ची सहेजी नहीं जाती.",
-  walletBody: "एक फ़ोन एक गवाह है. यह पता रीडिंग में नाम की तरह नहीं लिखा जाता.",
+  walletBody:
+    "इस फ़ोन का एक ही पता नहीं है. हर सोसाइटी और पाली को आधी रात तक अपना गवाह मिलता है. वह पता रीडिंग में नाम की तरह नहीं लिखा जाता.",
+  witnessForBoard: "इस बोर्ड का गवाह",
+  witnessHint:
+    "यह पता यहीं दर्ज करता है, आधी रात तक. दूसरी सोसाइटी को दूसरा पता मिलता है. दर्ज करने से पहले इसे GLM दें.",
   getGlm: "टेस्ट GLM लें",
   openLead: "इमारत का नाम लिखें. पर्ची का फैट अगली स्क्रीन पर ही रहता है.",
   district: "ज़िला या यूनियन",

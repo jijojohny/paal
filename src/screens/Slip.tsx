@@ -17,7 +17,7 @@ export function Slip() {
   const [above, setAbove] = useState<SpreadRow[] | null>(null)
   const [slipUsed, setSlipUsed] = useState<string | null>(null)
   const [same, setSame] = useState(0)
-  const mine = creatorAddress()
+  const mine = isShift(shift) ? creatorAddress(area, society, shift) : ""
   const [error, setError] = useState("")
   const [pending, setPending] = useState(false)
   const { lang, t } = useLanguage()

@@ -24,13 +24,15 @@ export function File() {
   const [invalid, setInvalid] = useState<"fat" | "snf" | null>(null)
   const [pending, setPending] = useState(false)
   const [faucet, setFaucet] = useState(false)
+  const [copyNote, setCopyNote] = useState<"" | "copied" | "failed">("")
   const { t } = useLanguage()
+  const witness = isShift(shift) ? creatorAddress(area, society, shift) : ""
 
   useEffect(() => {
     if (!isShift(shift)) return
     let cancelled = false
     setStatus("loading")
-    findMine(creatorAddress(), area, society, shift)
+    findMine(creatorAddress(area, society, shift), area, society, shift)
       .then((reading) => {
         if (cancelled) return
         setMine(reading)
@@ -103,7 +105,8 @@ export function File() {
     setFaucet(false)
     setMessage("")
     try {
-      await removeOwnReading(mine.key)
+      if (!isShift(shift)) return
+      await removeOwnReading(area, society, shift, mine.key)
       setMine(null)
       setFat("")
       setSnf("")
@@ -121,6 +124,31 @@ export function File() {
       <SocietyHeader area={area} society={society} shift={shift} />
       <h2>{t.glassTitle}</h2>
       <p>{t.glassLead}</p>
+      {witness ? (
+        <div className="share-link">
+          <h2>{t.witnessForBoard}</h2>
+          <p>{t.witnessHint}</p>
+          <p className="address">{witness}</p>
+          <button
+            type="button"
+            className="quiet"
+            onClick={() => {
+              navigator.clipboard.writeText(witness).then(
+                () => setCopyNote("copied"),
+                () => setCopyNote("failed"),
+              )
+            }}
+          >
+            {t.copyAddress}
+          </button>
+          {copyNote === "copied" ? <p aria-live="polite">{t.addressCopied}</p> : null}
+          {copyNote === "failed" ? (
+            <p className="error" aria-live="polite">
+              {t.addressCopyFailed}
+            </p>
+          ) : null}
+        </div>
+      ) : null}
       {status === "loading" ? <p aria-busy="true">{t.checking}</p> : null}
       {status === "error" ? (
         <div>
@@ -131,7 +159,7 @@ export function File() {
             onClick={() => {
               setStatus("loading")
               if (!isShift(shift)) return
-              findMine(creatorAddress(), area, society, shift)
+              findMine(creatorAddress(area, society, shift), area, society, shift)
                 .then((reading) => {
                   setMine(reading)
                   setMessage("")
