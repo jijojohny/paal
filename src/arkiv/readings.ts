@@ -36,8 +36,28 @@ function readingQuery(area: string, society: string, shift: Shift) {
     .limit(100)
 }
 
+function withTimeout<T>(work: Promise<T>): Promise<T> {
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error("query timed out")), 12_000)
+    work.then(
+      (value) => {
+        clearTimeout(timer)
+        resolve(value)
+      },
+      (error: unknown) => {
+        clearTimeout(timer)
+        reject(error)
+      },
+    )
+  })
+}
+
 /** One row per creator. The first live reading from a wallet is the one that counts. */
 export async function fetchSpread(area: string, society: string, shift: Shift): Promise<SpreadRow[]> {
+  return withTimeout(collectSpread(area, society, shift))
+}
+
+async function collectSpread(area: string, society: string, shift: Shift): Promise<SpreadRow[]> {
   const byCreator = new Map<string, SpreadRow>()
   for await (const entity of readingQuery(area, society, shift)) {
     const creator = entity.creator
@@ -57,7 +77,8 @@ export async function findMine(
   society: string,
   shift: Shift,
 ): Promise<OwnReading | null> {
-  const page = await publicClient
+  const page = await withTimeout(
+    publicClient
     .select({ key: true, attributes: true })
     .createdBy(creator)
     .where(
@@ -67,7 +88,8 @@ export async function findMine(
       eq("shift", str(shift)),
     )
     .limit(1)
-    .fetch()
+    .fetch(),
+  )
   const entity = page.entities[0]
   if (!entity) return null
   const fat = readDec(entity.attributes?.fat)

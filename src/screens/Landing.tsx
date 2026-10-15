@@ -1,9 +1,16 @@
-import { Link } from "react-router-dom"
+import { useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import { defaultShift } from "../arkiv/expiry"
+import type { Place } from "../arkiv/labels"
+import { listPlaces } from "../arkiv/places"
 import { useLanguage } from "../i18n/language"
 import { SiteHeader } from "./SiteHeader"
+import { todayPath } from "./paths"
 
 export function Landing() {
   const { t } = useLanguage()
+  const navigate = useNavigate()
+  const [places] = useState<Place[]>(() => listPlaces())
   return (
     <div className="landing">
       <SiteHeader />
@@ -50,6 +57,27 @@ export function Landing() {
             <h2>{t.onSlip}</h2>
             <p>{t.onSlipBody}</p>
           </article>
+          {places.length > 0 ? (
+            <article className="landing-saved">
+              <h2>{t.opened}</h2>
+              <ul className="open-places">
+                {places.map((place) => (
+                  <li key={`${place.area}/${place.society}`}>
+                    <Link
+                      to={todayPath(place.area, place.society, defaultShift())}
+                      onClick={(event) => {
+                        event.preventDefault()
+                        navigate(todayPath(place.area, place.society, defaultShift()))
+                      }}
+                    >
+                      {place.society}
+                      <span>{place.area}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ) : null}
         </div>
       </section>
     </div>

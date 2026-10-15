@@ -477,6 +477,39 @@ h1 {
   line-height: 1.45;
 }
 
+.landing-saved {
+  grid-column: 1 / -1;
+}
+
+.landing-board .open-places {
+  margin-top: 0.35rem;
+}
+
+.gap-figure {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0 0 1rem;
+}
+
+.gap-figure strong {
+  color: var(--ink);
+  font-size: clamp(2.4rem, 6vw, 3.4rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.landing-page .gap-figure span {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.callout button.quiet {
+  margin-left: 0.35rem;
+  min-height: 2.25rem;
+}
+
 .landing-page {
   max-width: 40rem;
   margin: 0 auto;

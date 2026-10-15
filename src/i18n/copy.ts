@@ -131,6 +131,10 @@ const en = {
     `This phone already filed fat ${fat}, SNF ${snf}. A second reading is refused.`,
   errNoGlm: "This phone has no test GLM. Get some from the faucet, then file again.",
   errQuery: "The query failed.",
+  errQueryFull: "The public query is full. Try again in a few minutes.",
+  errTimeout: "The query did not answer. Try again.",
+  liveStopped: "Live updates stopped. This board is the last query.",
+  biggestGap: "The largest gap above the slip",
   errWrite: "The write failed.",
   errDelete: "The delete failed.",
 }
@@ -266,6 +270,10 @@ const ta: Copy = {
     `இந்தத் தொலைபேசி கொழுப்பு ${fat}, SNF ${snf} ஏற்கெனவே பதித்தது. இரண்டாவது அளவீடு மறுக்கப்படும்.`,
   errNoGlm: "இந்தத் தொலைபேசியில் சோதனை GLM இல்லை. குழாயிலிருந்து பெற்று மீண்டும் பதியுங்கள்.",
   errQuery: "வினவல் தோல்வியடைந்தது.",
+  errQueryFull: "பொது வினவல் நிரம்பியது. சில நிமிடங்களில் மீண்டும் முயலுங்கள்.",
+  errTimeout: "வினவல் பதிலளிக்கவில்லை. மீண்டும் முயலுங்கள்.",
+  liveStopped: "நேரடி புதுப்பிப்பு நின்றது. இந்தப் பலகை கடைசி வினவல்.",
+  biggestGap: "சீட்டை விட மிக அதிக இடைவெளி",
   errWrite: "எழுதுதல் தோல்வியடைந்தது.",
   errDelete: "நீக்குதல் தோல்வியடைந்தது.",
 }
@@ -398,6 +406,10 @@ const hi: Copy = {
   alreadyFiled: (fat, snf) => `इस फ़ोन ने फैट ${fat}, SNF ${snf} पहले ही दर्ज किया. दूसरी रीडिंग मना है.`,
   errNoGlm: "इस फ़ोन पर टेस्ट GLM नहीं है. नल से लेकर फिर दर्ज करें.",
   errQuery: "पूछताछ असफल रही.",
+  errQueryFull: "सार्वजनिक पूछताछ भर गई है. कुछ मिनट बाद फिर कोशिश करें.",
+  errTimeout: "पूछताछ का जवाब नहीं आया. फिर कोशिश करें.",
+  liveStopped: "लाइव अपडेट रुक गया. यह बोर्ड आखिरी पूछताछ है.",
+  biggestGap: "पर्ची से सबसे बड़ा फ़ासला",
   errWrite: "लिखना असफल रहा.",
   errDelete: "हटाना असफल रहा.",
 }
@@ -408,9 +420,24 @@ export function htmlLang(lang: Lang): string {
   return lang
 }
 
+function httpStatus(error: unknown): number | undefined {
+  let current: unknown = error
+  for (let depth = 0; current && typeof current === "object" && depth < 6; depth++) {
+    if ("status" in current && typeof current.status === "number") return current.status
+    current = "cause" in current ? current.cause : undefined
+  }
+  return undefined
+}
+
 export function explainFailure(error: unknown, t: Copy): { text: string; faucet: boolean } {
   const raw = error instanceof Error ? error.message : ""
   if (raw.includes("no test GLM")) return { text: t.errNoGlm, faucet: true }
+  if (httpStatus(error) === 429 || raw.includes("429") || raw.includes("ANON_COST")) {
+    return { text: t.errQueryFull, faucet: false }
+  }
+  if (raw.includes("query timed out") || raw.includes("took too long")) {
+    return { text: t.errTimeout, faucet: false }
+  }
   if (!raw) return { text: t.errQuery, faucet: false }
   return { text: raw, faucet: false }
 }

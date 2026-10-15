@@ -37,6 +37,8 @@ export function Today() {
   const [status, setStatus] = useState<Status>("loading")
   const [rows, setRows] = useState<SpreadRow[]>([])
   const [message, setMessage] = useState("")
+  const [live, setLive] = useState<"on" | "off">("on")
+  const [attempt, setAttempt] = useState(0)
   const mine = isShift(shift) ? creatorAddress(area, society, shift) : ""
   const { t } = useLanguage()
 
@@ -55,11 +57,15 @@ export function Today() {
 
   useEffect(() => {
     setStatus("loading")
+    setLive("on")
     void load()
-    return watchReadings(() => {
-      void load()
-    })
-  }, [load])
+    return watchReadings(
+      () => {
+        void load()
+      },
+      () => setLive("off"),
+    )
+  }, [load, attempt])
 
   if (!isShift(shift)) {
     return (
@@ -75,6 +81,14 @@ export function Today() {
   return (
     <SocietyScreen>
       <SocietyHeader area={area} society={society} shift={shift} />
+      {live === "off" && status !== "loading" ? (
+        <div className="callout">
+          {t.liveStopped}{" "}
+          <button type="button" className="quiet" onClick={() => setAttempt((value) => value + 1)}>
+            {t.tryAgain}
+          </button>
+        </div>
+      ) : null}
       {status === "loading" ? (
         <p className="panel panel-quiet" aria-busy="true">
           {t.readingBoard}

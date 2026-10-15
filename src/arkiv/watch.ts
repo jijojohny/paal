@@ -1,13 +1,11 @@
 import { openWatchClient } from "./client"
 
 /** Reruns the readings query when an entity is created or deleted. The event is not the count. */
-export function watchReadings(onChange: () => void): () => void {
+export function watchReadings(onChange: () => void, onStop: () => void): () => void {
   const client = openWatchClient()
   return client.watchEntityEvents({
     onEntityCreated: () => onChange(),
     onEntityDeleted: () => onChange(),
-    onError: () => {
-      // A socket error is not a new reading. The last query stays on screen.
-    },
+    onError: () => onStop(),
   })
 }

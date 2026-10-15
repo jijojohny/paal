@@ -128,6 +128,10 @@ export function Slip() {
         {above != null && same > 0 ? <p>{t.sameAsSlip(same)}</p> : null}
         {above != null && above.length > 0 && slipUsed ? (
           <>
+            <p className="gap-figure">
+              <strong>{fatGap(above[0].fat, slipUsed)}</strong>
+              <span>{t.biggestGap}</span>
+            </p>
             <h2>{t.aboveSlip}</h2>
             <ul className="board-list">
               {above.map((row) => (

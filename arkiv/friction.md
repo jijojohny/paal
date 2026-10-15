@@ -11,3 +11,13 @@ Actual: `EntityMutationError: Transaction failed: Execution error without revert
 Steps: generate a fresh key, call `fileReadingFor` with area `madurai`, society `structure check`, shift `morning`, fat `3.5`, SNF `8.5`, and an empty payload.
 
 The app now checks the balance first and tells the pourer to use the faucet, so this raw error is not what the screen shows for an empty wallet.
+
+## Anonymous query budget
+
+Expected: `arkiv_query` on the public HTTP endpoint returns the matching readings.
+
+Actual: HTTP 429, body `ANON_COST_LIMITED`, message `unauthenticated query budget exhausted`. Headers included `ratelimit: limit=10000, remaining=0` and `retry-after`. `eth_chainId` on the same host still returned `0x7614d1`. The SDK waited on that 429, so the board stayed on “Reading the board…”.
+
+Steps: POST `arkiv_query` for `app = "paal"` to `https://rpc.tiramisu.db-chain.testnet.arkiv.network` with no access key. Observed 15 Oct 2026.
+
+An access key on that URL returns HTTP 200 and the query completes. The key stays in `.env` and is not in the repo. A query that still fails is shown on the screen, and the client no longer retries the 429.

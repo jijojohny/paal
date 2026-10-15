@@ -24,15 +24,17 @@ function authed(url: string): string {
   return key ? `${url}/${encodeURIComponent(key)}` : url
 }
 
+const rpc = { timeout: 12_000, retryCount: 0 } as const
+
 export const publicClient = createPublicClient({
   chain: tiramisu,
-  transport: http(authed(TIRAMISU_HTTP)),
+  transport: http(authed(TIRAMISU_HTTP), rpc),
 })
 
 export function openWatchClient() {
   return createPublicClient({
     chain: tiramisu,
-    transport: webSocket(authed(TIRAMISU_WS)),
+    transport: webSocket(authed(TIRAMISU_WS), { timeout: 12_000, retryCount: 0 }),
   })
 }
 
@@ -69,7 +71,7 @@ export function walletClientFor(account: Account) {
   return createWalletClient({
     account,
     chain: tiramisu,
-    transport: http(authed(TIRAMISU_HTTP)),
+    transport: http(authed(TIRAMISU_HTTP), rpc),
   })
 }
 
