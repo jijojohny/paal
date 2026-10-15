@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { defaultShift } from "../arkiv/expiry"
 import type { Place } from "../arkiv/labels"
-import { listPlaces } from "../arkiv/places"
+import { forgetPlace, listPlaces } from "../arkiv/places"
 import { useLanguage } from "../i18n/language"
 import { SiteHeader } from "./SiteHeader"
 import { todayPath } from "./paths"
@@ -10,7 +10,7 @@ import { todayPath } from "./paths"
 export function Landing() {
   const { t } = useLanguage()
   const navigate = useNavigate()
-  const [places] = useState<Place[]>(() => listPlaces())
+  const [places, setPlaces] = useState<Place[]>(() => listPlaces())
   return (
     <div className="landing">
       <SiteHeader />
@@ -73,6 +73,14 @@ export function Landing() {
                       {place.society}
                       <span>{place.area}</span>
                     </Link>
+                    <button
+                      type="button"
+                      className="quiet"
+                      aria-label={t.forgetPlaceLabel(place.society)}
+                      onClick={() => setPlaces(forgetPlace(place))}
+                    >
+                      {t.forgetPlace}
+                    </button>
                   </li>
                 ))}
               </ul>

@@ -1,4 +1,4 @@
-import { FormEvent, useRef, useState } from "react"
+import { FormEvent, useEffect, useRef, useState } from "react"
 import { Link, useParams } from "react-router-dom"
 import { fatGap, isHigherFat, isShift, parseQuality } from "../arkiv/labels"
 import { fetchSpread, type SpreadRow } from "../arkiv/readings"
@@ -6,6 +6,7 @@ import { creatorAddress } from "../arkiv/write"
 import { copy, explainFailure } from "../i18n/copy"
 import { useLanguage } from "../i18n/language"
 import { SocietyHeader, SocietyScreen } from "./SocietyHeader"
+import { useIstDate } from "./useIstDate"
 
 export function Slip() {
   const params = useParams()
@@ -21,6 +22,14 @@ export function Slip() {
   const [error, setError] = useState("")
   const [pending, setPending] = useState(false)
   const { lang, t } = useLanguage()
+  const day = useIstDate()
+
+  useEffect(() => {
+    setAbove(null)
+    setSlipUsed(null)
+    setSame(0)
+    setError("")
+  }, [day])
 
   if (!isShift(shift)) {
     return (

@@ -29,3 +29,10 @@ export function rememberPlace(place: Place): void {
   ].slice(0, MAX_PLACES)
   localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
 }
+
+/** Drops one saved name. Fats were never in this list. */
+export function forgetPlace(place: Place): Place[] {
+  const next = listPlaces().filter((item) => item.area !== place.area || item.society !== place.society)
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
+  return next
+}

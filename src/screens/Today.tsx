@@ -8,6 +8,7 @@ import { explainFailure } from "../i18n/copy"
 import { useLanguage } from "../i18n/language"
 import { SocietyHeader, SocietyScreen } from "./SocietyHeader"
 import { filePath, slipPath } from "./paths"
+import { useIstDate } from "./useIstDate"
 
 function byFat(rows: SpreadRow[]): SpreadRow[] {
   return [...rows].sort((a, b) => Number(b.fat) - Number(a.fat) || Number(b.snf) - Number(a.snf))
@@ -41,6 +42,7 @@ export function Today() {
   const [attempt, setAttempt] = useState(0)
   const mine = isShift(shift) ? creatorAddress(area, society, shift) : ""
   const { t } = useLanguage()
+  const day = useIstDate()
 
   const load = useCallback(async () => {
     if (!isShift(shift)) return
@@ -53,7 +55,7 @@ export function Today() {
       setMessage(explainFailure(error, t).text)
       setStatus("error")
     }
-  }, [area, society, shift, t])
+  }, [area, society, shift, t, day])
 
   useEffect(() => {
     setStatus("loading")

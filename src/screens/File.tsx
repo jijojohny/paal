@@ -8,6 +8,7 @@ import { explainFailure } from "../i18n/copy"
 import { useLanguage } from "../i18n/language"
 import { todayPath } from "./paths"
 import { SocietyHeader, SocietyScreen } from "./SocietyHeader"
+import { useIstDate } from "./useIstDate"
 
 export function File() {
   const params = useParams()
@@ -28,15 +29,31 @@ export function File() {
   const [balance, setBalance] = useState<bigint | null>(null)
   const [balanceStatus, setBalanceStatus] = useState<"loading" | "ready" | "error">("loading")
   const [balanceMessage, setBalanceMessage] = useState("")
+  const [balanceCheck, setBalanceCheck] = useState(0)
   const { t } = useLanguage()
+  const day = useIstDate()
   const witness = isShift(shift) ? creatorAddress(area, society, shift) : ""
+  const scope = isShift(shift) ? `${day}|${area}|${society}|${shift}` : ""
+  const [seenScope, setSeenScope] = useState(scope)
+  if (seenScope !== scope) {
+    setSeenScope(scope)
+    setBalance(null)
+    setBalanceStatus("loading")
+    setBalanceMessage("")
+    setBalanceCheck(0)
+  }
+
+  useEffect(() => {
+    const onVisible = () => {
+      if (document.visibilityState === "visible") setBalanceCheck((value) => value + 1)
+    }
+    document.addEventListener("visibilitychange", onVisible)
+    return () => document.removeEventListener("visibilitychange", onVisible)
+  }, [])
 
   useEffect(() => {
     if (!isShift(shift)) return
     let cancelled = false
-    setBalance(null)
-    setBalanceMessage("")
-    setBalanceStatus("loading")
     witnessBalance(area, society, shift)
       .then((next) => {
         if (cancelled) return
@@ -51,7 +68,7 @@ export function File() {
     return () => {
       cancelled = true
     }
-  }, [area, society, shift, t])
+  }, [area, society, shift, t, day, balanceCheck])
 
   useEffect(() => {
     if (!isShift(shift)) return
@@ -73,7 +90,7 @@ export function File() {
     return () => {
       cancelled = true
     }
-  }, [area, society, shift, t])
+  }, [area, society, shift, t, day])
 
   if (!isShift(shift)) {
     return (
@@ -299,6 +316,9 @@ export function File() {
               <a className="landing-ghost" href={FAUCET_URL} target="_blank" rel="noreferrer">
                 {t.getGlm}
               </a>
+              <button type="button" className="quiet" onClick={() => setBalanceCheck((value) => value + 1)}>
+                {t.checkGlm}
+              </button>
             </div>
             {copyNote === "copied" ? <p aria-live="polite">{t.addressCopied}</p> : null}
             {copyNote === "failed" ? (

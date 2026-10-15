@@ -2,7 +2,7 @@ import { FormEvent, useRef, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { defaultShift } from "../arkiv/expiry"
 import { isDigitsOnly, normalizeLabel, type Place, type Shift } from "../arkiv/labels"
-import { listPlaces, rememberPlace } from "../arkiv/places"
+import { forgetPlace, listPlaces, rememberPlace } from "../arkiv/places"
 import { useLanguage } from "../i18n/language"
 import { SiteHeader } from "./SiteHeader"
 import { todayPath } from "./paths"
@@ -152,6 +152,14 @@ export function Open() {
                     {place.society}
                     <span>{place.area}</span>
                   </Link>
+                  <button
+                    type="button"
+                    className="quiet"
+                    aria-label={t.forgetPlaceLabel(place.society)}
+                    onClick={() => setPlaces(forgetPlace(place))}
+                  >
+                    {t.forgetPlace}
+                  </button>
                 </li>
               ))}
             </ul>

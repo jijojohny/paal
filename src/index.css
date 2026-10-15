@@ -700,6 +700,21 @@ h1 {
   padding: 0;
 }
 
+.open-places li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.open-places li a {
+  flex: 1;
+}
+
+.open-places li button {
+  flex-shrink: 0;
+  margin-top: 0;
+}
+
 .open-places a {
   display: flex;
   justify-content: space-between;
