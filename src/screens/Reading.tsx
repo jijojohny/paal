@@ -20,6 +20,10 @@ export function Reading() {
         <p>{t.readingLeavesBody}</p>
         <h2>{t.readingOnce}</h2>
         <p>{t.readingOnceBody}</p>
+        <h2>{t.readingFund}</h2>
+        <p>{t.readingFundBody}</p>
+        <h2>{t.readingSeen}</h2>
+        <p>{t.readingSeenBody}</p>
         <h2>{t.readingMidnight}</h2>
         <p>{t.readingMidnightBody}</p>
         <Link className="landing-solid" to="/open">

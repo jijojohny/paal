@@ -1150,7 +1150,8 @@ h1 {
   font-weight: 500;
 }
 
-.society-page .argue span {
+.society-page .argue span,
+.reading-note .argue span {
   display: block;
   margin-top: 0.4rem;
   font-weight: 400;

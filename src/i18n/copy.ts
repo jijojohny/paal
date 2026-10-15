@@ -34,15 +34,36 @@ const en = {
   readingPlaceLine: "The district or union, the society name, and morning or evening.",
   readingLeaves: "What stays off it",
   readingLeavesBody:
-    "The paper slip, the pourer's name, phone, farmer code, litres, and the rupee rate are not filed.",
-  readingOnce: "One phone, one reading",
+    "The paper slip, the pourer's name, phone, farmer code, litres, and the rupee rate are not filed. The witness address is not a name.",
+  readingOnce: "One reading per board",
   readingOnceBody:
-    "A second filing from the same phone is refused. If the fat was mistyped, that phone can remove its own reading and file again.",
+    "A phone files once for each society, shift, and day. A second filing on that board is refused. If the fat was mistyped, that phone can remove its own reading and file again.",
+  readingFund: "Before filing",
+  readingFundBody:
+    "Each board gets its own witness address on this phone. The File screen shows that address and its test GLM. Filing needs test GLM from the faucet.",
+  readingSeen: "Who sees it",
+  readingSeenBody:
+    "Anyone who opens the board sees the readings for that society and shift. The count and the spread come from that query. Nothing is added up and saved.",
   readingMidnight: "Until midnight",
   readingMidnightBody:
     "The reading stays on this shift's board, then dies at midnight in India. Tomorrow's board starts empty.",
-  slipP1: "The number on the paper stays on that screen. It is compared here and never written.",
-  slipP2: "A pourer types the fat printed on the paper slip. The slip is never stored.",
+  slipLead:
+    "The slip is the paper the society hands back with the fat it measured. Paal checks that number against what other phones saw on the glass.",
+  slipTypes: "What you type",
+  slipTypesBody: "Only the fat printed on the slip, from 1 to 12. SNF on the slip is not compared.",
+  slipGoes: "Where it goes",
+  slipGoesBody:
+    "Nowhere. The number stays on that screen. It is not saved on this phone and not written to Arkiv. Leave the page and it is gone.",
+  slipShows: "What the compare shows",
+  slipShowsAbove: "Readings with a higher fat than the slip, and how much higher.",
+  slipShowsSame: "How many readings match the slip.",
+  slipShowsGap: "The largest gap above the slip, as one number.",
+  slipArgue: "When to argue",
+  slipArgueBody:
+    "Only when more than one phone saw a higher fat than the slip. One phone cannot change the society. When it happens, this line shows in English and Tamil:",
+  slipBlind: "What it cannot see",
+  slipBlindBody:
+    "If the analyser itself reads low, and every phone and the slip agree, Paal shows nothing wrong. It only catches a slip that is lower than the glass.",
   walletBody:
     "This phone does not keep one address. Each society and shift gets its own witness until midnight in India. That address is not written into the reading as a name.",
   witnessForBoard: "Witness for this board",
@@ -178,15 +199,36 @@ const ta: Copy = {
   readingPlaceLine: "மாவட்டம் அல்லது ஒன்றியம், சங்கத்தின் பெயர், காலை அல்லது மாலை.",
   readingLeaves: "பதிக்கப்படாதது",
   readingLeavesBody:
-    "காகித சீட்டு, ஊற்றுபவரின் பெயர், தொலைபேசி எண், உறுப்பினர் குறியீடு, லிட்டர், ரூபாய் விலை ஆகியவை பதிக்கப்படாது.",
-  readingOnce: "ஒரு தொலைபேசி, ஒரு அளவீடு",
+    "காகித சீட்டு, ஊற்றுபவரின் பெயர், தொலைபேசி எண், உறுப்பினர் குறியீடு, லிட்டர், ரூபாய் விலை ஆகியவை பதிக்கப்படாது. சாட்சி முகவரி ஒரு பெயர் அல்ல.",
+  readingOnce: "ஒரு பலகைக்கு ஒரு அளவீடு",
   readingOnceBody:
-    "அதே தொலைபேசியின் இரண்டாவது பதிவு மறுக்கப்படும். கொழுப்பு தவறாக இருந்தால் அந்தத் தொலைபேசி தன் அளவீட்டை நீக்கி மீண்டும் பதிக்கலாம்.",
+    "ஒரு தொலைபேசி ஒவ்வொரு சங்கம், முறை, நாளுக்கு ஒரு முறை பதிக்கும். அதே பலகையில் இரண்டாவது பதிவு மறுக்கப்படும். கொழுப்பு தவறாக இருந்தால் அந்தத் தொலைபேசி தன் அளவீட்டை நீக்கி மீண்டும் பதிக்கலாம்.",
+  readingFund: "பதிக்கும் முன்",
+  readingFundBody:
+    "ஒவ்வொரு பலகைக்கும் இந்தத் தொலைபேசியில் தனி சாட்சி முகவரி உண்டு. பதிவுத் திரை அந்த முகவரியையும் அதன் சோதனை GLM-ஐயும் காட்டும். பதிக்க குழாயிலிருந்து சோதனை GLM வேண்டும்.",
+  readingSeen: "யார் பார்க்கலாம்",
+  readingSeenBody:
+    "பலகையைத் திறக்கும் எவரும் அந்த சங்கம், அந்த முறையின் அளவீடுகளைப் பார்க்கலாம். எண்ணிக்கையும் பரவலும் அந்த வினவலிலிருந்து வருகின்றன. எதுவும் கூட்டிச் சேமிக்கப்படாது.",
   readingMidnight: "நள்ளிரவு வரை",
   readingMidnightBody:
     "அளவீடு இந்த முறையின் பலகையில் இருக்கும். இந்திய நேரப்படி நள்ளிரவில் அது மறையும். நாளைய பலகை காலியாகத் தொடங்கும்.",
-  slipP1: "காகிதத்தில் உள்ள எண் அந்தத் திரையிலேயே இருக்கும். ஒப்பிடப்படும். எழுதப்படாது.",
-  slipP2: "ஊற்றுபவர் காகித சீட்டில் அச்சிடப்பட்ட கொழுப்பை உள்ளிடுகிறார். சீட்டு சேமிக்கப்படாது.",
+  slipLead:
+    "சீட்டு என்பது சங்கம் அளந்த கொழுப்புடன் திருப்பித் தரும் காகிதம். மற்ற தொலைபேசிகள் கண்ணாடியில் பார்த்ததோடு Paal அந்த எண்ணை ஒப்பிடுகிறது.",
+  slipTypes: "நீங்கள் உள்ளிடுவது",
+  slipTypesBody: "சீட்டில் அச்சிடப்பட்ட கொழுப்பு மட்டும், 1 முதல் 12 வரை. சீட்டின் SNF ஒப்பிடப்படாது.",
+  slipGoes: "அது எங்கே போகிறது",
+  slipGoesBody:
+    "எங்கும் இல்லை. எண் அந்தத் திரையிலேயே இருக்கும். இந்தத் தொலைபேசியில் சேமிக்கப்படாது, Arkiv-இல் எழுதப்படாது. பக்கத்தை விட்டால் அது மறையும்.",
+  slipShows: "ஒப்பீடு காட்டுவது",
+  slipShowsAbove: "சீட்டை விட அதிக கொழுப்புள்ள அளவீடுகள், எவ்வளவு அதிகம் என்பதுடன்.",
+  slipShowsSame: "சீட்டுடன் ஒன்றாக உள்ள அளவீடுகள் எத்தனை.",
+  slipShowsGap: "சீட்டை விட மிக அதிக இடைவெளி, ஒரே எண்ணாக.",
+  slipArgue: "எப்போது வாதிடுவது",
+  slipArgueBody:
+    "ஒன்றுக்கு மேற்பட்ட தொலைபேசிகள் சீட்டை விட அதிக கொழுப்பு பார்த்தால் மட்டும். ஒரு தொலைபேசி சங்கத்தை மாற்ற முடியாது. அப்போது இந்த வரி தமிழிலும் ஆங்கிலத்திலும் தெரியும்:",
+  slipBlind: "இது பார்க்க முடியாதது",
+  slipBlindBody:
+    "பகுப்பாய்வியே குறைவாகக் காட்டி, எல்லா தொலைபேசிகளும் சீட்டும் ஒத்துப்போனால், Paal எந்தத் தவறும் காட்டாது. கண்ணாடியை விடக் குறைவான சீட்டை மட்டுமே அது பிடிக்கும்.",
   walletBody:
     "இந்தத் தொலைபேசிக்கு ஒரே முகவரி இல்லை. ஒவ்வொரு சங்கம், ஒவ்வொரு முறைக்கும் நள்ளிரவு வரை தனி சாட்சி. அந்த முகவரி அளவீட்டில் பெயராக எழுதப்படாது.",
   witnessForBoard: "இந்தப் பலகையின் சாட்சி",
@@ -318,15 +360,36 @@ const hi: Copy = {
   readingPlaceLine: "ज़िला या यूनियन, सोसाइटी का नाम, और सुबह या शाम.",
   readingLeaves: "क्या दर्ज नहीं होता",
   readingLeavesBody:
-    "कागज़ की पर्ची, उडेलने वाले का नाम, फ़ोन, किसान कोड, लीटर, और रुपए का भाव दर्ज नहीं होते.",
-  readingOnce: "एक फ़ोन, एक रीडिंग",
+    "कागज़ की पर्ची, उडेलने वाले का नाम, फ़ोन, किसान कोड, लीटर, और रुपए का भाव दर्ज नहीं होते. गवाह पता कोई नाम नहीं है.",
+  readingOnce: "हर बोर्ड पर एक रीडिंग",
   readingOnceBody:
-    "उसी फ़ोन की दूसरी दर्ज मना है. फैट गलत हो तो वह फ़ोन अपनी रीडिंग हटाकर फिर दर्ज कर सकता है.",
+    "एक फ़ोन हर सोसाइटी, पाली और दिन के लिए एक बार दर्ज करता है. उसी बोर्ड पर दूसरी दर्ज मना है. फैट गलत हो तो वह फ़ोन अपनी रीडिंग हटाकर फिर दर्ज कर सकता है.",
+  readingFund: "दर्ज करने से पहले",
+  readingFundBody:
+    "इस फ़ोन पर हर बोर्ड का अपना गवाह पता होता है. दर्ज स्क्रीन वह पता और उसका टेस्ट GLM दिखाती है. दर्ज करने के लिए नल से टेस्ट GLM चाहिए.",
+  readingSeen: "कौन देख सकता है",
+  readingSeenBody:
+    "बोर्ड खोलने वाला कोई भी उस सोसाइटी और पाली की रीडिंग देख सकता है. गिनती और फैलाव उसी पूछताछ से आते हैं. कुछ भी जोड़कर सहेजा नहीं जाता.",
   readingMidnight: "आधी रात तक",
   readingMidnightBody:
     "रीडिंग इस पाली के बोर्ड पर रहती है. भारत में आधी रात को वह मिट जाती है. कल का बोर्ड खाली शुरू होता है.",
-  slipP1: "कागज़ का अंक उसी स्क्रीन पर रहता है. यहाँ तुलना होती है, और वह लिखा नहीं जाता.",
-  slipP2: "दूध उडेलने वाला पर्ची पर छपा फैट लिखता है. पर्ची सहेजी नहीं जाती.",
+  slipLead:
+    "पर्ची वह कागज़ है जो सोसाइटी मापे गए फैट के साथ लौटाती है. Paal उस अंक को दूसरे फ़ोनों के काँच पर देखे फैट से मिलाता है.",
+  slipTypes: "आप क्या लिखते हैं",
+  slipTypesBody: "सिर्फ़ पर्ची पर छपा फैट, 1 से 12. पर्ची का SNF नहीं मिलाया जाता.",
+  slipGoes: "वह कहाँ जाता है",
+  slipGoesBody:
+    "कहीं नहीं. अंक उसी स्क्रीन पर रहता है. इस फ़ोन पर सहेजा नहीं जाता और Arkiv पर लिखा नहीं जाता. पन्ना छोड़ते ही वह मिट जाता है.",
+  slipShows: "तुलना क्या दिखाती है",
+  slipShowsAbove: "पर्ची से ऊँचे फैट वाली रीडिंग, और कितनी ऊँची.",
+  slipShowsSame: "कितनी रीडिंग पर्ची के बराबर हैं.",
+  slipShowsGap: "पर्ची से सबसे बड़ा फ़ासला, एक अंक में.",
+  slipArgue: "बहस कब करें",
+  slipArgueBody:
+    "सिर्फ़ तब, जब एक से ज़्यादा फ़ोनों ने पर्ची से ऊँचा फैट देखा हो. एक फ़ोन सोसाइटी नहीं बदल सकता. तब यह पंक्ति हिंदी और तमिल में दिखती है:",
+  slipBlind: "यह क्या नहीं देख सकता",
+  slipBlindBody:
+    "अगर विश्लेषक खुद कम पढ़ता है, और हर फ़ोन और पर्ची सहमत हैं, तो Paal कोई गड़बड़ी नहीं दिखाता. यह सिर्फ़ काँच से कम पर्ची पकड़ता है.",
   walletBody:
     "इस फ़ोन का एक ही पता नहीं है. हर सोसाइटी और पाली को आधी रात तक अपना गवाह मिलता है. वह पता रीडिंग में नाम की तरह नहीं लिखा जाता.",
   witnessForBoard: "इस बोर्ड का गवाह",
