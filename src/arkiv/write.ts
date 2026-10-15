@@ -1,6 +1,6 @@
 import { ExpirationTime } from "@arkiv-network/sdk"
 import { dec, str } from "@arkiv-network/sdk/attr"
-import type { Account, Hex } from "viem"
+import { formatEther, type Account, type Hex } from "viem"
 import { publicClient, walletClientFor, witnessAccount } from "./client"
 import { nextIstMidnight } from "./expiry"
 import { parseQuality, type Shift } from "./labels"
@@ -79,4 +79,18 @@ export async function removeOwnReading(
 
 export function creatorAddress(area: string, society: string, shift: Shift): Hex {
   return witnessAccount(area, society, shift).address
+}
+
+export function witnessBalance(area: string, society: string, shift: Shift): Promise<bigint> {
+  return publicClient.getBalance({ address: creatorAddress(area, society, shift) })
+}
+
+/** GLM uses 18 decimals. A zero balance stays `0`; dust keeps its full fraction. */
+export function formatGlm(balance: bigint): string {
+  if (balance === 0n) return "0"
+  const [whole, fraction = ""] = formatEther(balance).split(".")
+  const shown = fraction.slice(0, 4).replace(/0+$/, "")
+  if (shown) return `${whole}.${shown}`
+  if (fraction.length > 4 && whole === "0") return `0.${fraction.replace(/0+$/, "")}`
+  return whole
 }

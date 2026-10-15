@@ -919,6 +919,21 @@ h1 {
   margin-bottom: 0.25rem;
 }
 
+.witness .glm-stat {
+  width: 100%;
+  margin: 0 0 0.9rem;
+  background: #0f0f0f;
+}
+
+.witness .glm-stat strong {
+  font-size: 1.35rem;
+}
+
+.landing-page .witness .glm-stat p {
+  margin: 0.15rem 0 0;
+  font-size: 0.9rem;
+}
+
 .panel .open-form {
   margin-top: 1rem;
 }

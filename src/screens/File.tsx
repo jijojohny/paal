@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom"
 import { FAUCET_URL } from "../arkiv/client"
 import { isShift, parseQuality } from "../arkiv/labels"
 import { findMine, type OwnReading } from "../arkiv/readings"
-import { AlreadyFiled, creatorAddress, fileReading, removeOwnReading } from "../arkiv/write"
+import { AlreadyFiled, creatorAddress, fileReading, formatGlm, removeOwnReading, witnessBalance } from "../arkiv/write"
 import { explainFailure } from "../i18n/copy"
 import { useLanguage } from "../i18n/language"
 import { todayPath } from "./paths"
@@ -25,8 +25,33 @@ export function File() {
   const [pending, setPending] = useState(false)
   const [faucet, setFaucet] = useState(false)
   const [copyNote, setCopyNote] = useState<"" | "copied" | "failed">("")
+  const [balance, setBalance] = useState<bigint | null>(null)
+  const [balanceStatus, setBalanceStatus] = useState<"loading" | "ready" | "error">("loading")
+  const [balanceMessage, setBalanceMessage] = useState("")
   const { t } = useLanguage()
   const witness = isShift(shift) ? creatorAddress(area, society, shift) : ""
+
+  useEffect(() => {
+    if (!isShift(shift)) return
+    let cancelled = false
+    setBalance(null)
+    setBalanceMessage("")
+    setBalanceStatus("loading")
+    witnessBalance(area, society, shift)
+      .then((next) => {
+        if (cancelled) return
+        setBalance(next)
+        setBalanceStatus("ready")
+      })
+      .catch((cause: unknown) => {
+        if (cancelled) return
+        setBalanceMessage(explainFailure(cause, t).text)
+        setBalanceStatus("error")
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [area, society, shift, t])
 
   useEffect(() => {
     if (!isShift(shift)) return
@@ -248,6 +273,16 @@ export function File() {
             <h2>{t.witnessForBoard}</h2>
             <p>{t.witnessHint}</p>
             <p className="address">{witness}</p>
+            <div className="stat glm-stat" aria-live="polite">
+              <span className="stat-label">{t.testGlm}</span>
+              <strong>
+                {balanceStatus === "loading" ? t.glmChecking : null}
+                {balanceStatus === "ready" && balance != null ? formatGlm(balance) : null}
+                {balanceStatus === "error" ? "—" : null}
+              </strong>
+              {balanceStatus === "ready" && balance === 0n ? <p className="error">{t.glmNone}</p> : null}
+              {balanceStatus === "error" ? <p className="error">{balanceMessage}</p> : null}
+            </div>
             <div className="form-actions">
               <button
                 type="button"

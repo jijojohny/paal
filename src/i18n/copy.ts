@@ -48,6 +48,10 @@ const en = {
   witnessForBoard: "Witness for this board",
   witnessHint:
     "This address files only here, until midnight. Another society gets another address. Fund this one before filing.",
+  testGlm: "Test GLM",
+  glmNone: "Fund this address before filing.",
+  glmChecking: "Checking test GLM…",
+  glmBalanceFailed: "The GLM balance did not load.",
   getGlm: "Get test GLM",
   openLead: "Name the building. The fat on your paper slip stays on the next screen.",
   district: "District or union",
@@ -181,6 +185,10 @@ const ta: Copy = {
   witnessForBoard: "இந்தப் பலகையின் சாட்சி",
   witnessHint:
     "இந்த முகவரி இங்கே மட்டும், நள்ளிரவு வரை பதிக்கும். வேறு சங்கத்துக்கு வேறு முகவரி. பதிக்கும் முன் இதற்கு GLM பெறுங்கள்.",
+  testGlm: "சோதனை GLM",
+  glmNone: "பதிக்கும் முன் இதற்கு GLM பெறுங்கள்.",
+  glmChecking: "சோதனை GLM பார்க்கிறது…",
+  glmBalanceFailed: "GLM இருப்பு ஏறவில்லை.",
   getGlm: "சோதனை GLM பெறு",
   openLead: "கட்டிடத்தின் பெயரைச் சொல்லுங்கள். காகித சீட்டின் கொழுப்பு அடுத்த திரையிலேயே இருக்கும்.",
   district: "மாவட்டம் அல்லது ஒன்றியம்",
@@ -310,6 +318,10 @@ const hi: Copy = {
   witnessForBoard: "इस बोर्ड का गवाह",
   witnessHint:
     "यह पता यहीं दर्ज करता है, आधी रात तक. दूसरी सोसाइटी को दूसरा पता मिलता है. दर्ज करने से पहले इसे GLM दें.",
+  testGlm: "टेस्ट GLM",
+  glmNone: "दर्ज करने से पहले इसे GLM दें.",
+  glmChecking: "टेस्ट GLM जाँचा जा रहा है…",
+  glmBalanceFailed: "GLM बैलेंस नहीं खुला.",
   getGlm: "टेस्ट GLM लें",
   openLead: "इमारत का नाम लिखें. पर्ची का फैट अगली स्क्रीन पर ही रहता है.",
   district: "ज़िला या यूनियन",
