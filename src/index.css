@@ -809,10 +809,24 @@ h1 {
   background: var(--card);
 }
 
+.board-list .gap {
+  color: var(--muted);
+}
+
 .board-list em {
   margin-left: auto;
   font-style: normal;
   color: var(--accent);
+}
+
+.landing-page .form-actions {
+  margin-top: 0.4rem;
+}
+
+.landing-page button.quiet {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--ghost);
 }
 
 .society-page .error,

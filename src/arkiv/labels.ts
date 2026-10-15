@@ -39,3 +39,9 @@ export function parseQuality(value: string, kind: "fat" | "snf"): string | null 
 export function isHigherFat(readingFat: string, slipFat: string): boolean {
   return Number(readingFat) > Number(slipFat)
 }
+
+/** How far a glass fat sits above the paper, to two decimal places. */
+export function fatGap(readingFat: string, slipFat: string): string {
+  const gap = Math.round((Number(readingFat) - Number(slipFat)) * 100) / 100
+  return String(gap)
+}

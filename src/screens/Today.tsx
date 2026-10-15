@@ -6,6 +6,7 @@ import { fetchSpread, type SpreadRow } from "../arkiv/readings"
 import { watchReadings } from "../arkiv/watch"
 import { explainFailure } from "../i18n/copy"
 import { useLanguage } from "../i18n/language"
+import { SocietyHeader, SocietyScreen } from "./SocietyHeader"
 import { filePath, slipPath } from "./paths"
 
 function byFat(rows: SpreadRow[]): SpreadRow[] {
@@ -21,7 +22,10 @@ function fatBounds(rows: SpreadRow[]): { low: string; high: string } {
   }
   return { low: low.fat, high: high.fat }
 }
-import { SocietyHeader, SocietyScreen } from "./SocietyHeader"
+
+function isThisPhone(creator: string, mine: string): boolean {
+  return creator.toLowerCase() === mine.toLowerCase()
+}
 
 type Status = "loading" | "ready" | "error"
 
@@ -94,6 +98,13 @@ export function Today() {
         <>
           <p className="board-count">{t.walletCount(rows.length)}</p>
           <p className="board-count">{t.spreadLine(fatBounds(rows).low, fatBounds(rows).high)}</p>
+          {rows.length === 1 ? <p className="hint">{t.oneWitness}</p> : null}
+          {!rows.some((row) => isThisPhone(row.creator, mine)) ? (
+            <p className="hint">
+              {t.notFiled}{" "}
+              <Link to={filePath(area, society, shift)}>{t.fileGlass}</Link>
+            </p>
+          ) : null}
           <ul className="board-list">
             {byFat(rows).map((row) => (
               <li key={row.creator}>
@@ -103,7 +114,7 @@ export function Today() {
                 <span>
                   {t.snf} {row.snf}
                 </span>
-                {row.creator.toLowerCase() === mine.toLowerCase() ? <em>{t.thisPhone}</em> : null}
+                {isThisPhone(row.creator, mine) ? <em>{t.thisPhone}</em> : null}
               </li>
             ))}
           </ul>

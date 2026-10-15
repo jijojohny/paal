@@ -1,6 +1,6 @@
 import { FormEvent, useRef, useState } from "react"
 import { Link, useParams } from "react-router-dom"
-import { isHigherFat, isShift, parseQuality } from "../arkiv/labels"
+import { fatGap, isHigherFat, isShift, parseQuality } from "../arkiv/labels"
 import { fetchSpread, type SpreadRow } from "../arkiv/readings"
 import { creatorAddress } from "../arkiv/write"
 import { copy, explainFailure } from "../i18n/copy"
@@ -15,6 +15,8 @@ export function Slip() {
   const fatRef = useRef<HTMLInputElement>(null)
   const [slipFat, setSlipFat] = useState("")
   const [above, setAbove] = useState<SpreadRow[] | null>(null)
+  const [slipUsed, setSlipUsed] = useState<string | null>(null)
+  const [same, setSame] = useState(0)
   const mine = creatorAddress()
   const [error, setError] = useState("")
   const [pending, setPending] = useState(false)
@@ -37,6 +39,8 @@ export function Slip() {
     const parsed = parseQuality(slipFat, "fat")
     if (!parsed) {
       setAbove(null)
+      setSlipUsed(null)
+      setSame(0)
       setError("slip")
       fatRef.current?.focus()
       return
@@ -45,6 +49,8 @@ export function Slip() {
     setError("")
     try {
       const rows = await fetchSpread(area, society, shift)
+      setSlipUsed(parsed)
+      setSame(rows.filter((row) => Number(row.fat) === Number(parsed)).length)
       setAbove(
         rows
           .filter((row) => isHigherFat(row.fat, parsed))
@@ -52,6 +58,8 @@ export function Slip() {
       )
     } catch (cause) {
       setAbove(null)
+      setSlipUsed(null)
+      setSame(0)
       setError(explainFailure(cause, t).text)
     } finally {
       setPending(false)
@@ -96,6 +104,8 @@ export function Slip() {
             onClick={() => {
               setSlipFat("")
               setAbove(null)
+              setSlipUsed(null)
+              setSame(0)
               setError("")
             }}
           >
@@ -110,7 +120,8 @@ export function Slip() {
         </p>
       ) : null}
       {above != null && above.length <= 1 ? <p className="hint">{t.calm(above.length)}</p> : null}
-      {above != null && above.length > 0 ? (
+      {above != null && same > 0 ? <p className="hint">{t.sameAsSlip(same)}</p> : null}
+      {above != null && above.length > 0 && slipUsed ? (
         <>
           <h2>{t.aboveSlip}</h2>
           <ul className="board-list">
@@ -122,6 +133,7 @@ export function Slip() {
                 <span>
                   {t.snf} {row.snf}
                 </span>
+                <span className="gap">{t.aboveBy(fatGap(row.fat, slipUsed))}</span>
                 {row.creator.toLowerCase() === mine.toLowerCase() ? <em>{t.thisPhone}</em> : null}
               </li>
             ))}
