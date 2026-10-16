@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { Link, NavLink } from "react-router-dom"
 import type { Lang } from "../i18n/copy"
 import { useLanguage } from "../i18n/language"
+import { Logo } from "./Logo"
 
 const LANGS: { code: Lang; label: string }[] = [
   { code: "en", label: "English" },
@@ -37,7 +38,7 @@ export function SiteHeader() {
   return (
     <header className="landing-bar">
       <Link className="landing-mark" to="/">
-        <span className="landing-logo" aria-hidden="true" />
+        <Logo />
         Paal
         <span className="landing-badge">{t.untilMidnight}</span>
       </Link>

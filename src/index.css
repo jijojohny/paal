@@ -236,10 +236,25 @@ h1 {
 }
 
 .landing-logo {
-  width: 1.15rem;
-  height: 1.15rem;
-  border-radius: 0.2rem;
-  background: var(--accent);
+  width: 1.85rem;
+  height: 1.85rem;
+  flex: none;
+  display: block;
+}
+
+.logo-drop {
+  fill: var(--accent);
+}
+
+.logo-slip {
+  fill: var(--ink);
+}
+
+.logo-rule {
+  fill: none;
+  stroke: var(--accent-ink);
+  stroke-width: 1.35;
+  stroke-linecap: round;
 }
 
 .landing-nav {
