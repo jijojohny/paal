@@ -21,3 +21,11 @@ Actual: HTTP 429, body `ANON_COST_LIMITED`, message `unauthenticated query budge
 Steps: POST `arkiv_query` for `app = "paal"` to `https://rpc.tiramisu.db-chain.testnet.arkiv.network` with no access key. Observed 15 Oct 2026.
 
 An access key on that URL returns HTTP 200 and the query completes. The key stays in `.env` and is not in the repo. A query that still fails is shown on the screen, and the client no longer retries the 429.
+
+## Access key quota
+
+Expected: a fresh access key covers a hackathon demo for the month.
+
+Actual: one day later the key returned HTTP 429, body `{"error":"QUOTA_EXCEEDED","message":"quota exhausted"}`. The same query without the key returned 200 with `ratelimit: limit=600`. Observed 16 Oct 2026.
+
+The client now tries the key first. If the key gets a 401, 403, or 429, the same call goes to the public endpoint. Live updates use the public socket.

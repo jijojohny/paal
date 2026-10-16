@@ -1,7 +1,7 @@
 import { createPublicClient, createWalletClient } from "@arkiv-network/sdk"
 import { tiramisu } from "@arkiv-network/sdk/chains"
 import { encodePacked, keccak256, type Account, type Hex } from "viem"
-import { http, webSocket } from "viem"
+import { fallback, http, webSocket } from "viem"
 import { generatePrivateKey, privateKeyToAccount } from "viem/accounts"
 import { istDate } from "./expiry"
 import type { Shift } from "./labels"
@@ -26,15 +26,35 @@ function authed(url: string): string {
 
 const rpc = { timeout: 12_000, retryCount: 0 } as const
 
+/** The key only adds quota. When the key is refused, the same call goes to the public endpoint. */
+function keyRefused(error: unknown): boolean {
+  let current: unknown = error
+  for (let depth = 0; current && typeof current === "object" && depth < 6; depth++) {
+    if ("status" in current && (current.status === 401 || current.status === 403 || current.status === 429)) {
+      return true
+    }
+    current = "cause" in current ? current.cause : undefined
+  }
+  return false
+}
+
+function rpcTransport() {
+  if (!accessKey()) return http(TIRAMISU_HTTP, rpc)
+  return fallback([http(authed(TIRAMISU_HTTP), rpc), http(TIRAMISU_HTTP, rpc)], {
+    retryCount: 0,
+    shouldThrow: (error) => !keyRefused(error),
+  })
+}
+
 export const publicClient = createPublicClient({
   chain: tiramisu,
-  transport: http(authed(TIRAMISU_HTTP), rpc),
+  transport: rpcTransport(),
 })
 
 export function openWatchClient() {
   return createPublicClient({
     chain: tiramisu,
-    transport: webSocket(authed(TIRAMISU_WS), { timeout: 12_000, retryCount: 0 }),
+    transport: webSocket(TIRAMISU_WS, { timeout: 12_000, retryCount: 0 }),
   })
 }
 
@@ -71,7 +91,7 @@ export function walletClientFor(account: Account) {
   return createWalletClient({
     account,
     chain: tiramisu,
-    transport: http(authed(TIRAMISU_HTTP), rpc),
+    transport: rpcTransport(),
   })
 }
 
