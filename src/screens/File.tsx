@@ -1,12 +1,12 @@
 import { FormEvent, useEffect, useRef, useState } from "react"
 import { Link, useParams } from "react-router-dom"
 import { FAUCET_URL } from "../arkiv/client"
-import { isShift, parseQuality } from "../arkiv/labels"
+import { isShift, otherShift, parseQuality } from "../arkiv/labels"
 import { findMine, type OwnReading } from "../arkiv/readings"
 import { AlreadyFiled, creatorAddress, fileReading, formatGlm, removeOwnReading, witnessBalance } from "../arkiv/write"
 import { explainFailure } from "../i18n/copy"
 import { useLanguage } from "../i18n/language"
-import { todayPath } from "./paths"
+import { filePath, todayPath } from "./paths"
 import { SocietyHeader, SocietyScreen } from "./SocietyHeader"
 import { useIstDate } from "./useIstDate"
 
@@ -30,6 +30,9 @@ export function File() {
   const [balanceStatus, setBalanceStatus] = useState<"loading" | "ready" | "error">("loading")
   const [balanceMessage, setBalanceMessage] = useState("")
   const [balanceCheck, setBalanceCheck] = useState(0)
+  const [otherGlm, setOtherGlm] = useState<bigint | null>(null)
+  const [otherGlmStatus, setOtherGlmStatus] = useState<"idle" | "loading" | "ready" | "error">("idle")
+  const [otherGlmMessage, setOtherGlmMessage] = useState("")
   const { t } = useLanguage()
   const day = useIstDate()
   const witness = isShift(shift) ? creatorAddress(area, society, shift) : ""
@@ -41,6 +44,9 @@ export function File() {
     setBalanceStatus("loading")
     setBalanceMessage("")
     setBalanceCheck(0)
+    setOtherGlm(null)
+    setOtherGlmStatus("idle")
+    setOtherGlmMessage("")
   }
 
   useEffect(() => {
@@ -69,6 +75,26 @@ export function File() {
       cancelled = true
     }
   }, [area, society, shift, t, day, balanceCheck])
+
+  useEffect(() => {
+    if (!isShift(shift) || balanceStatus !== "ready" || balance !== 0n) return
+    let cancelled = false
+    setOtherGlmStatus("loading")
+    witnessBalance(area, society, otherShift(shift))
+      .then((next) => {
+        if (cancelled) return
+        setOtherGlm(next)
+        setOtherGlmStatus("ready")
+      })
+      .catch((cause: unknown) => {
+        if (cancelled) return
+        setOtherGlmMessage(explainFailure(cause, t).text)
+        setOtherGlmStatus("error")
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [area, society, shift, t, day, balance, balanceStatus, balanceCheck])
 
   useEffect(() => {
     if (!isShift(shift)) return
@@ -299,6 +325,19 @@ export function File() {
               </strong>
               {balanceStatus === "ready" && balance === 0n ? <p className="error">{t.glmNone}</p> : null}
               {balanceStatus === "error" ? <p className="error">{balanceMessage}</p> : null}
+              {balance === 0n && otherGlmStatus === "ready" && otherGlm != null && otherGlm > 0n ? (
+                <p className="callout">
+                  {t.glmOnOther(shift === "morning" ? t.evening : t.morning, formatGlm(otherGlm))}{" "}
+                  <Link to={filePath(area, society, shift === "morning" ? "evening" : "morning")}>
+                    {t.openShift(shift === "morning" ? t.evening : t.morning)}
+                  </Link>
+                </p>
+              ) : null}
+              {balance === 0n && otherGlmStatus === "error" ? (
+                <p className="error">
+                  {t.otherGlmFailed(shift === "morning" ? t.evening : t.morning)} {otherGlmMessage}
+                </p>
+              ) : null}
             </div>
             <div className="form-actions">
               <button

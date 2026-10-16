@@ -136,6 +136,14 @@ const en = {
   fileGlass: "File what the glass showed",
   statWallets: "Wallets filed",
   statSpread: "Fat spread",
+  statSnf: "SNF spread",
+  otherShiftHas: (name: string, n: number) =>
+    `${name} has ${n} ${n === 1 ? "wallet" : "wallets"} filed. This shift is a separate board.`,
+  openShift: (name: string) => `Open ${name}`,
+  otherShiftFailed: (name: string) => `The ${name} board did not load.`,
+  glmOnOther: (name: string, amount: string) =>
+    `This shift has no test GLM. ${name} on this phone has ${amount}.`,
+  otherGlmFailed: (name: string) => `The ${name} GLM balance did not load.`,
   notSaved: "Counted from this query. Not saved.",
   slipWaiting: "Type the fat on the slip. Readings above it show here.",
   aboveSlip: "Above this slip",
@@ -323,6 +331,14 @@ const ta: Copy = {
   fileGlass: "கண்ணாடி காட்டியதைப் பதி",
   statWallets: "பதித்த பணப்பைகள்",
   statSpread: "கொழுப்பு பரவல்",
+  statSnf: "SNF பரவல்",
+  otherShiftHas: (name: string, n: number) =>
+    `${name} பலகையில் ${n} பணப்பை பதித்துள்ளது. இந்த முறை தனி பலகை.`,
+  openShift: (name: string) => `${name} திற`,
+  otherShiftFailed: (name: string) => `${name} பலகை ஏறவில்லை.`,
+  glmOnOther: (name: string, amount: string) =>
+    `இந்த முறைக்கு சோதனை GLM இல்லை. இந்தத் தொலைபேசியின் ${name} முகவரியில் ${amount} உள்ளது.`,
+  otherGlmFailed: (name: string) => `${name} GLM இருப்பு ஏறவில்லை.`,
   notSaved: "இந்த வினவலில் எண்ணப்பட்டது. சேமிக்கப்படாது.",
   slipWaiting: "சீட்டின் கொழுப்பை உள்ளிடுங்கள். அதைவிட அதிகமான அளவீடுகள் இங்கே தெரியும்.",
   aboveSlip: "இந்த சீட்டுக்கு மேல்",
@@ -505,6 +521,14 @@ const hi: Copy = {
   fileGlass: "काँच पर जो दिखा वह दर्ज करें",
   statWallets: "दर्ज वॉलेट",
   statSpread: "फैट फैलाव",
+  statSnf: "SNF फैलाव",
+  otherShiftHas: (name: string, n: number) =>
+    `${name} पर ${n} ${n === 1 ? "वॉलेट दर्ज है" : "वॉलेट दर्ज हैं"}. यह पाली अलग बोर्ड है.`,
+  openShift: (name: string) => `${name} खोलें`,
+  otherShiftFailed: (name: string) => `${name} का बोर्ड नहीं खुला.`,
+  glmOnOther: (name: string, amount: string) =>
+    `इस पाली में टेस्ट GLM नहीं है. इस फ़ोन के ${name} पते पर ${amount} है.`,
+  otherGlmFailed: (name: string) => `${name} का GLM बैलेंस नहीं खुला.`,
   notSaved: "इसी पूछताछ से गिना गया. सहेजा नहीं जाता.",
   slipWaiting: "पर्ची का फैट लिखें. उससे ऊँची रीडिंग यहाँ दिखेंगी.",
   aboveSlip: "इस पर्ची से ऊपर",

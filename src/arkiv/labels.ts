@@ -13,6 +13,10 @@ export function isShift(value: string | undefined): value is Shift {
   return value === "morning" || value === "evening"
 }
 
+export function otherShift(shift: Shift): Shift {
+  return shift === "morning" ? "evening" : "morning"
+}
+
 export function normalizeLabel(value: string): string {
   return value.trim().toLowerCase().replace(/\s+/g, " ")
 }
