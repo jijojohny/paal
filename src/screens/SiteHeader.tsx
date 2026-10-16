@@ -42,6 +42,7 @@ export function SiteHeader() {
         <span className="landing-badge">{t.untilMidnight}</span>
       </Link>
       <nav className="landing-nav" aria-label="Page">
+        <NavLink to="/problem">{t.problem}</NavLink>
         <NavLink to="/reading">{t.reading}</NavLink>
         <NavLink to="/slip">{t.slip}</NavLink>
         <NavLink to="/wallet">{t.wallet}</NavLink>

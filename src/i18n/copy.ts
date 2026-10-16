@@ -3,6 +3,7 @@ export type Lang = "en" | "ta" | "hi"
 const en = {
   language: "Language",
   untilMidnight: "Until midnight",
+  problem: "Problem",
   reading: "The reading",
   slip: "The slip",
   wallet: "Wallet",
@@ -26,6 +27,26 @@ const en = {
   onGlassBody: "Fat and SNF other phones file for this society and this shift. One phone, one reading.",
   onSlip: "On the slip",
   onSlipBody: "The number on the paper. Compared on that screen, and never written.",
+  problemLead:
+    "A village milk society pays the farmer from the fat typed off a paper slip. The analyser glass can show a higher fat. The farmer is paid for the lower number.",
+  problemIssue: "The issue",
+  problemIssueBody:
+    "The pourer types the fat printed on the slip. That number decides the payment. People standing there can see a different fat on the glass. One person's word against the society is easy to dismiss.",
+  problemWrong: "What goes wrong",
+  problemWrongPay: "A lower fat on the slip means less money for the same milk.",
+  problemWrongOne: "A single phone can be waved away. The society keeps the slip.",
+  problemWrongBook: "A book or a society computer can be changed after the farmer has left.",
+  problemDoes: "What Paal does",
+  problemDoesGlass:
+    "Other phones file the fat and SNF they saw on the glass. One phone, one reading, for that society and that shift.",
+  problemDoesSlip: "The pourer types the slip fat only to compare. The slip is never stored.",
+  problemDoesArgue:
+    "The argue line appears only when more than one wallet saw a fat strictly higher than the slip.",
+  problemDoesMidnight: "Readings die at midnight in India. Tomorrow's board starts empty.",
+  problemDoesOwn: "A phone can remove only its own reading. The count is this query. It is not a saved total.",
+  problemLimit: "What it does not fix",
+  problemLimitBody:
+    "If the analyser itself reads low, and every phone and the slip agree, Paal shows nothing wrong. It only catches a slip that is lower than the glass.",
   readingLead:
     "A reading is the fat and SNF one phone saw on the analyser, for one society and one shift.",
   readingHolds: "What is filed",
@@ -168,6 +189,7 @@ export type Copy = typeof en
 const ta: Copy = {
   language: "மொழி",
   untilMidnight: "நள்ளிரவு வரை",
+  problem: "சிக்கல்",
   reading: "அளவீடு",
   slip: "சீட்டு",
   wallet: "பணப்பை",
@@ -191,6 +213,27 @@ const ta: Copy = {
   onGlassBody: "இந்த சங்கம், இந்த முறைக்கு மற்ற தொலைபேசிகள் கொழுப்பையும் SNF-ஐயும் பதிக்கின்றன. ஒரு தொலைபேசி, ஒரு அளவீடு.",
   onSlip: "சீட்டில்",
   onSlipBody: "காகிதத்தில் உள்ள எண். அந்தத் திரையில் ஒப்பிடப்படும். எழுதப்படாது.",
+  problemLead:
+    "ஒரு கிராமப் பால் சங்கம் காகித சீட்டிலிருந்து உள்ளிடப்பட்ட கொழுப்புக்கு விவசாயிக்குப் பணம் தருகிறது. பகுப்பாய்வி கண்ணாடி அதைவிட அதிக கொழுப்பைக் காட்டலாம். விவசாயி குறைந்த எண்ணுக்குப் பணம் பெறுகிறார்.",
+  problemIssue: "என்ன நடக்கிறது",
+  problemIssueBody:
+    "ஊற்றுபவர் சீட்டில் அச்சிடப்பட்ட கொழுப்பை உள்ளிடுகிறார். அந்த எண் பணத்தைத் தீர்மானிக்கிறது. அங்கே நிற்பவர்கள் கண்ணாடியில் வேறு கொழுப்பைப் பார்க்கலாம். சங்கத்துக்கு எதிராக ஒருவரின் சொல்லை எளிதில் தள்ளிவிடலாம்.",
+  problemWrong: "என்ன தவறாகிறது",
+  problemWrongPay: "சீட்டில் குறைந்த கொழுப்பு என்றால் அதே பாலுக்குக் குறைந்த பணம்.",
+  problemWrongOne: "ஒரு தொலைபேசியை புறக்கணிக்கலாம். சீட்டு சங்கத்திடமே இருக்கும்.",
+  problemWrongBook: "விவசாயி சென்ற பிறகு ஒரு ஏட்டுக் கணக்கையோ சங்கக் கணினியையோ மாற்றலாம்.",
+  problemDoes: "Paal செய்வது",
+  problemDoesGlass:
+    "மற்ற தொலைபேசிகள் கண்ணாடியில் பார்த்த கொழுப்பையும் SNF-ஐயும் பதிக்கின்றன. ஒரு தொலைபேசி, ஒரு அளவீடு, அந்த சங்கம், அந்த முறை.",
+  problemDoesSlip: "ஊற்றுபவர் சீட்டுக் கொழுப்பை ஒப்பிட மட்டும் உள்ளிடுகிறார். சீட்டு சேமிக்கப்படாது.",
+  problemDoesArgue:
+    "வாதிடும் வரி ஒன்றுக்கு மேற்பட்ட பணப்பைகள் சீட்டை விட அதிக கொழுப்பைப் பார்த்தால் மட்டுமே வரும்.",
+  problemDoesMidnight: "அளவீடுகள் இந்திய நேரப்படி நள்ளிரவில் மறையும். நாளைய பலகை காலியாகத் தொடங்கும்.",
+  problemDoesOwn:
+    "ஒரு தொலைபேசி தன் அளவீட்டை மட்டுமே நீக்கும். எண்ணிக்கை இந்த வினவல். சேமித்த கூட்டுத்தொகை அல்ல.",
+  problemLimit: "இது செய்யாதது",
+  problemLimitBody:
+    "பகுப்பாய்வியே குறைவாகப் படித்து, ஒவ்வொரு தொலைபேசியும் சீட்டும் ஒத்துப்போனால், Paal தவறு எதுவும் காட்டாது. கண்ணாடியை விடக் குறைந்த சீட்டை மட்டுமே இது பிடிக்கும்.",
   readingLead:
     "ஒரு அளவீடு என்பது ஒரு தொலைபேசி பகுப்பாய்வியில் பார்த்த கொழுப்பும் SNF-உம். ஒரு சங்கம், ஒரு முறை.",
   readingHolds: "பதிக்கப்படுவது",
@@ -329,6 +372,7 @@ const ta: Copy = {
 const hi: Copy = {
   language: "भाषा",
   untilMidnight: "आधी रात तक",
+  problem: "समस्या",
   reading: "रीडिंग",
   slip: "पर्ची",
   wallet: "वॉलेट",
@@ -352,6 +396,26 @@ const hi: Copy = {
   onGlassBody: "इस सोसाइटी और इस पाली के लिए दूसरे फ़ोन फैट और SNF दर्ज करते हैं. एक फ़ोन, एक रीडिंग.",
   onSlip: "पर्ची पर",
   onSlipBody: "कागज़ पर छपा अंक. उसी स्क्रीन पर तुलना होती है, और वह लिखा नहीं जाता.",
+  problemLead:
+    "एक गाँव की दूध सोसाइटी किसान को कागज़ की पर्ची से लिखे फैट के हिसाब से पैसे देती है. विश्लेषक का काँच उससे ऊँचा फैट दिखा सकता है. किसान कम अंक के पैसे पाता है.",
+  problemIssue: "मामला",
+  problemIssueBody:
+    "दूध उडेलने वाला पर्ची पर छपा फैट लिखता है. वही अंक भुगतान तय करता है. वहाँ खड़े लोग काँच पर दूसरा फैट देख सकते हैं. सोसाइटी के सामने एक आदमी की बात आसानी से टाल दी जाती है.",
+  problemWrong: "क्या गड़बड़ होता है",
+  problemWrongPay: "पर्ची पर कम फैट का मतलब उसी दूध के कम पैसे.",
+  problemWrongOne: "एक फ़ोन को नज़रअंदाज़ किया जा सकता है. पर्ची सोसाइटी के पास ही रहती है.",
+  problemWrongBook: "किसान के जाने के बाद बही या सोसाइटी का कंप्यूटर बदला जा सकता है.",
+  problemDoes: "Paal क्या करता है",
+  problemDoesGlass:
+    "दूसरे फ़ोन काँच पर देखा फैट और SNF दर्ज करते हैं. एक फ़ोन, एक रीडिंग, उस सोसाइटी और उस पाली के लिए.",
+  problemDoesSlip: "उडेलने वाला पर्ची का फैट सिर्फ़ तुलना के लिए लिखता है. पर्ची सहेजी नहीं जाती.",
+  problemDoesArgue:
+    "बहस की पंक्ति तभी आती है जब एक से ज़्यादा वॉलेट ने पर्ची से ऊँचा फैट देखा हो.",
+  problemDoesMidnight: "रीडिंग भारत में आधी रात को मिट जाती है. कल का बोर्ड खाली शुरू होता है.",
+  problemDoesOwn: "एक फ़ोन सिर्फ़ अपनी रीडिंग हटा सकता है. गिनती यही पूछताछ है. सहेजा हुआ जोड़ नहीं.",
+  problemLimit: "यह क्या नहीं सुधारता",
+  problemLimitBody:
+    "अगर विश्लेषक खुद कम पढ़े, और हर फ़ोन और पर्ची सहमत हों, तो Paal कुछ गलत नहीं दिखाता. यह सिर्फ़ वह पर्ची पकड़ता है जो काँच से कम है.",
   readingLead:
     "एक रीडिंग वह फैट और SNF है जो एक फ़ोन ने विश्लेषक पर देखा, एक सोसाइटी और एक पाली के लिए.",
   readingHolds: "क्या दर्ज होता है",

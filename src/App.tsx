@@ -3,6 +3,7 @@ import { AboutSlip } from "./screens/AboutSlip"
 import { File } from "./screens/File"
 import { Landing } from "./screens/Landing"
 import { Open } from "./screens/Open"
+import { Problem } from "./screens/Problem"
 import { Reading } from "./screens/Reading"
 import { Slip } from "./screens/Slip"
 import { Today } from "./screens/Today"
@@ -13,6 +14,7 @@ export function App() {
     <BrowserRouter>
       <Routes>
         <Route index element={<Landing />} />
+        <Route path="problem" element={<Problem />} />
         <Route path="reading" element={<Reading />} />
         <Route path="slip" element={<AboutSlip />} />
         <Route path="wallet" element={<Wallet />} />
